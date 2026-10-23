@@ -1,0 +1,1053 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body style="margin:0">
+<title>Busca Mentoria Business</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: palco navy com os totais (profundidade e brilho lento) → painel de status clicável → barra de busca fixa → lista que vira cartões no celular */
+:root {
+  --bg: #eef2f6; --surface: #ffffff; --surface-2: #f6f8fb; --ink: #13293d; --ink-2: #4d6276; --rule: #d9e1e8;
+  --stage: #0f2236; --stage-2: #1b3a57; --stage-ink: #ffffff; --stage-mut: #b9c8d6;
+  --gold: #b07d22; --gold-hi: #e3b25a;
+  --won: #1f7a4d; --won-bg: #e6f4ec; --ent: #8a5d0c; --ent-bg: #fbf1de; --neg: #2a63b8; --neg-bg: #e7effa; --est: #b3261e; --est-bg: #fbe9e7;
+  --focus: #2a63b8; --shadow: 0 1px 2px rgba(15,34,54,.06), 0 8px 24px rgba(15,34,54,.08);
+  --display: "Archivo", "Segoe UI", Arial, sans-serif; --body: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0b1622; --surface: #12263a; --surface-2: #162d44; --ink: #e6edf3; --ink-2: #9fb2c4; --rule: #24405a;
+  --stage: #07111b; --stage-2: #13304b; --stage-ink: #eef3f8; --stage-mut: #93a8bc;
+  --gold: #e0aa4a; --gold-hi: #f3c977;
+  --won: #5fd394; --won-bg: #133a28; --ent: #f2c25b; --ent-bg: #3a2c10; --neg: #86b5f7; --neg-bg: #15304f; --est: #f28b82; --est-bg: #401a18;
+  --focus: #86b5f7; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.35); color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0b1622; --surface: #12263a; --surface-2: #162d44; --ink: #e6edf3; --ink-2: #9fb2c4; --rule: #24405a;
+  --stage: #07111b; --stage-2: #13304b; --stage-ink: #eef3f8; --stage-mut: #93a8bc;
+  --gold: #e0aa4a; --gold-hi: #f3c977;
+  --won: #5fd394; --won-bg: #133a28; --ent: #f2c25b; --ent-bg: #3a2c10; --neg: #86b5f7; --neg-bg: #15304f; --est: #f28b82; --est-bg: #401a18;
+  --focus: #86b5f7; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.35); color-scheme: dark }
+
+* { box-sizing: border-box }
+[hidden] { display: none !important }
+html, body { overflow-x: clip }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.45 }
+.gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+.inner { max-width: 1180px; margin: 0 auto; min-width: 0 }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap }
+
+/* Palco */
+.stage { position: relative; overflow: hidden; color: var(--stage-ink); padding-block: 28px 84px;
+  background: radial-gradient(120% 140% at 85% -20%, var(--stage-2) 0%, var(--stage) 55%) }
+.stage .inner { position: relative; display: grid; gap: 22px }
+.topo { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-start; justify-content: space-between }
+.eyebrow { font: 600 12px/1 var(--body); letter-spacing: .16em; text-transform: uppercase; color: var(--gold-hi) }
+h1 { font: 800 clamp(24px, 4vw, 36px)/1.08 var(--display); margin: 10px 0 0; text-wrap: balance; letter-spacing: -.01em }
+.lead { margin: 10px 0 0; color: var(--stage-mut); max-width: 62ch }
+.acoes { display: flex; flex-wrap: wrap; gap: 8px }
+.btn { font: 600 14px var(--body); display: inline-flex; align-items: center; gap: 8px; border-radius: 10px; padding: 10px 16px; cursor: pointer; border: 1px solid transparent; transition: transform .15s, box-shadow .15s, background .15s }
+.btn svg { width: 16px; height: 16px; flex: none }
+.btn-ouro { background: linear-gradient(180deg, var(--gold-hi), var(--gold)); color: #1a1205; box-shadow: 0 6px 18px rgba(176,125,34,.35) }
+.btn-ouro:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(176,125,34,.45) }
+.btn-vidro { background: rgba(255,255,255,.08); color: var(--stage-ink); border-color: rgba(255,255,255,.22) }
+.btn-vidro:hover { background: rgba(255,255,255,.14) }
+.btn:disabled { opacity: .6; cursor: progress; transform: none }
+.btn-vidro[aria-pressed="true"] { background: rgba(227,178,90,.18); border-color: var(--gold-hi); color: var(--gold-hi); box-shadow: inset 0 2px 6px rgba(0,0,0,.25) }
+.abas { scroll-margin-top: 90px }
+.aviso-dl { font-size: 12.5px; color: var(--stage-mut); width: 100% }
+.sync { margin: 8px 0 0; font-size: 13px; color: var(--stage-mut); display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center }
+.sync b { color: var(--stage-ink); font-weight: 600 }
+.sync .ponto { width: 8px; height: 8px; border-radius: 50%; background: var(--gold-hi); display: inline-block }
+.sync.verde .ponto { background: #5fd394; box-shadow: 0 0 0 3px rgba(95,211,148,.18) }
+.sync.amarelo .ponto { background: #f2c25b; box-shadow: 0 0 0 3px rgba(242,194,91,.18) }
+.sync.vermelho .ponto, .sync.erro .ponto { background: #f28b82; box-shadow: 0 0 0 3px rgba(242,139,130,.2) }
+.sync.vermelho .velha, .sync .falha { color: #f28b82 }
+.sync.busy .ponto { background: var(--gold-hi); box-shadow: none; animation: pisca 1s ease-in-out infinite }
+.sync .idade { cursor: help; border-bottom: 1px dotted currentColor }
+.sync .sync-bt { margin-left: auto; background: rgba(255,255,255,.08); color: var(--stage-ink); border: 1px solid rgba(255,255,255,.18); border-radius: 999px; padding: 4px 12px; font: 600 12px var(--body); cursor: pointer }
+.sync .sync-bt:hover { background: rgba(255,255,255,.16) }
+.sync .sync-bt:disabled { opacity: .5; cursor: default }
+@keyframes pisca { 50% { opacity: .25 } }
+.btn.girando svg { animation: gira 1s linear infinite }
+@keyframes gira { to { transform: rotate(360deg) } }
+.selo { display: inline-block; margin-left: 8px; font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; vertical-align: 2px }
+.selo.novo { background: var(--gold); color: #1a1205 } .selo.mudou { background: var(--neg-bg); color: var(--neg) }
+.kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px }
+.kpi { background: linear-gradient(160deg, rgba(255,255,255,.12), rgba(255,255,255,.03)); border: 1px solid rgba(255,255,255,.14); border-radius: 14px; padding: 14px 16px; box-shadow: 0 18px 40px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.12); transition: transform .25s, box-shadow .25s }
+.kpi:hover { transform: translateY(-2px); box-shadow: 0 24px 48px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.14) }
+.kpi span { display: block; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--stage-mut) }
+.kpi b { display: block; margin-top: 6px; font: 800 clamp(18px, 2.6vw, 26px)/1 var(--display); font-variant-numeric: tabular-nums; white-space: nowrap }
+.kpi.ouro b { color: var(--gold-hi) }
+.kpi small { display: block; margin-top: 6px; font-size: 12px; color: var(--stage-mut) }
+
+/* Painel de status (sobe sobre o palco) */
+.painel { margin-top: -60px; position: relative; z-index: 1 }
+.status-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px }
+.st { text-align: left; font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; padding: 12px 14px; cursor: pointer;
+  box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s, border-color .15s; position: relative; overflow: hidden; min-width: 0 }
+.st::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--c) }
+.st:hover { border-color: var(--c); transform: translateY(-2px); box-shadow: 0 2px 4px rgba(15,34,54,.08), 0 14px 30px rgba(15,34,54,.14) }
+.st:active { transform: translateY(1px) scale(.985) }
+.st[aria-pressed="true"], .st[aria-pressed="true"]:hover { background: color-mix(in srgb, var(--c) 11%, var(--surface)); border-color: var(--c); transform: translateY(1px);
+  box-shadow: inset 0 0 0 1px var(--c), inset 0 3px 10px rgba(15,34,54,.16) }
+.st[aria-pressed="true"]::after { width: 6px }
+.st .ok { position: absolute; top: 10px; right: 10px; display: none; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; letter-spacing: .04em; color: var(--surface); background: var(--c); border-radius: 99px; padding: 2px 8px 2px 6px }
+.st .ok svg { width: 11px; height: 11px }
+.st[aria-pressed="true"] .ok { display: inline-flex; animation: marca .2s ease-out }
+@keyframes marca { from { transform: scale(.6); opacity: 0 } to { transform: none; opacity: 1 } }
+.st .t { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--c) }
+.st .n { display: block; margin-top: 6px; font: 800 22px/1 var(--display); font-variant-numeric: tabular-nums }
+.st .v { display: block; margin-top: 4px; font-size: 12.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.st.won { --c: var(--won) } .st.ent { --c: var(--ent) } .st.neg { --c: var(--neg) } .st.est { --c: var(--est) } .st.venc { --c: var(--est) }
+.st.todos { --c: var(--ink) }
+
+/* Barra de busca fixa */
+.barra { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; padding-block: 12px; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px) }
+.barra .inner { display: flex; flex-wrap: wrap; gap: 10px; align-items: center }
+.busca { position: relative; flex: 1 1 320px; min-width: 0 }
+.busca svg { position: absolute; left: 13px; top: 50%; width: 18px; height: 18px; transform: translateY(-50%); color: var(--ink-2); pointer-events: none }
+.busca input { width: 100%; font: 500 16px var(--body); color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 12px 74px 12px 40px; box-shadow: var(--shadow) }
+.busca input::placeholder { color: var(--ink-2) }
+.busca kbd { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font: 600 12px var(--body); color: var(--ink-2); border: 1px solid var(--rule); border-radius: 6px; padding: 2px 7px; background: var(--surface-2) }
+.busca .x { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border: 0; background: var(--surface-2); color: var(--ink-2); font-size: 13px; font-weight: 600; cursor: pointer; padding: 5px 10px; border-radius: 8px }
+/* Pitch: um seletor só (cabe qualquer número de campanhas) */
+.pdd { position: relative; display: inline-flex; gap: 6px; align-items: center }
+.dd { font: 600 14px var(--body); display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 11px 14px; box-shadow: var(--shadow); color: var(--ink); cursor: pointer; white-space: nowrap; max-width: 100% }
+.dd small { color: var(--ink-2); font: 500 13.5px var(--body) }
+.dd b { overflow: hidden; text-overflow: ellipsis }
+.dd .q { color: var(--ink-2); font-weight: 500; font-variant-numeric: tabular-nums }
+.dd svg { width: 14px; height: 14px; flex: none; opacity: .6; transition: transform .15s }
+.dd[aria-expanded="true"] svg { transform: rotate(180deg) }
+.dd.on { background: var(--ink); color: var(--surface); border-color: var(--ink) }
+.dd.on small, .dd.on .q { color: inherit; opacity: .7 }
+.dd-x { border: 1px solid var(--rule); background: var(--surface); color: var(--ink-2); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 14px; box-shadow: var(--shadow); flex: none }
+.dd-x:hover { color: var(--ink) }
+.pop { position: absolute; top: calc(100% + 6px); right: 0; z-index: 6; width: 300px; max-width: calc(100vw - 32px); background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; box-shadow: var(--shadow); padding: 8px }
+.pop input { width: 100%; font: 500 15px var(--body); padding: 9px 11px; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface-2); color: var(--ink); margin-bottom: 6px }
+.pop .lst { max-height: min(320px, 55vh); overflow: auto; overscroll-behavior: contain }
+.pop .it { display: flex; width: 100%; justify-content: space-between; gap: 10px; font: 500 14px var(--body); color: var(--ink); background: none; border: 0; border-radius: 8px; padding: 9px 10px; cursor: pointer; text-align: left }
+.pop .it:hover, .pop .it:focus-visible { background: var(--surface-2) }
+.pop .it[aria-selected="true"] { background: var(--ink); color: var(--surface) }
+.pop .it .q { opacity: .6; font-variant-numeric: tabular-nums }
+.pop .it.zero { color: var(--ink-2) }
+.pop .sep { height: 1px; background: var(--rule); margin: 4px 6px }
+.pop .vazio-p { padding: 10px; color: var(--ink-2); font-size: 13.5px }
+.info { width: 100%; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 13.5px; color: var(--ink-2) }
+.link-btn { font: 600 13.5px var(--body); color: var(--neg); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px }
+
+/* Lista */
+.lista { background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; box-shadow: var(--shadow); overflow-x: auto }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums }
+th { position: sticky; top: 0; text-align: left; font: 600 11.5px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); background: var(--surface-2); padding: 13px 8px; border-bottom: 1px solid var(--rule); white-space: nowrap }
+th button { all: unset; cursor: pointer; display: inline-flex; gap: 4px; align-items: center }
+th button:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px }
+th button::after { content: "↕"; opacity: .35 }
+th[aria-sort="ascending"] button::after { content: "↑"; opacity: 1; color: var(--ink) }
+th[aria-sort="descending"] button::after { content: "↓"; opacity: 1; color: var(--ink) }
+td { padding: 11px 8px; border-bottom: 1px solid var(--rule); white-space: nowrap; vertical-align: middle }
+tbody tr { transition: background .15s }
+tbody tr:hover { background: var(--surface-2) }
+tbody tr.entra { animation: entra .35s cubic-bezier(.2,.7,.2,1) both }
+@keyframes entra { from { opacity: .001; transform: translateY(6px) } to { opacity: 1; transform: none } }
+.r { text-align: right }
+.pitch { display: inline-block; font-size: 12px; font-weight: 700; color: var(--ink-2); border: 1px solid var(--rule); border-radius: 6px; padding: 2px 7px }
+.nome a { color: var(--ink); font-weight: 600; text-decoration: none; background-image: linear-gradient(var(--gold), var(--gold)); background-size: 0 2px; background-position: 0 100%; background-repeat: no-repeat; transition: background-size .25s }
+.nome a:hover { background-size: 100% 2px }
+.nome sup { color: var(--ink-2); font-weight: 600; margin-left: 2px }
+.pill { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 4px 9px; border-radius: 99px }
+.pill.won { background: var(--won-bg); color: var(--won) } .pill.ent { background: var(--ent-bg); color: var(--ent) }
+.pill.neg { background: var(--neg-bg); color: var(--neg) } .pill.est { background: var(--est-bg); color: var(--est) }
+.det { font-size: 12.5px; color: var(--ink-2) }
+.det.venc { color: var(--est); font-weight: 600 }
+td.c-det { white-space: normal; min-width: 150px; max-width: 210px; line-height: 1.35 }
+.copiar { padding: 3px 7px }
+.fone { display: inline-flex; gap: 8px; align-items: center }
+.fone > span:first-child { display: inline-block; min-width: 8.6em; font-size: 15px; font-variant-numeric: tabular-nums }
+td.c-fone .det { display: inline-block; min-width: 8.6em; font-size: 13px }
+.copiar { font: 600 12px var(--body); color: var(--ink-2); background: var(--surface-2); border: 1px solid var(--rule); border-radius: 8px; padding: 4px 9px; cursor: pointer; transition: color .15s, border-color .15s }
+.copiar:hover { color: var(--ink); border-color: var(--ink-2) }
+.copiar.ok { color: var(--won); border-color: var(--won) }
+.liq { color: var(--ink-2) }
+tr.vaga td { background: var(--surface-2); padding-block: 8px }
+tr.vaga td.c-nome, tr.vaga td.c-det { font-size: 13.5px }
+tr.vaga .nome { font-weight: 500; color: var(--ink) }
+tr.vaga .seta { color: var(--gold); font-weight: 700; margin: 0 6px 0 4px }
+tfoot td { font: 800 15px/1 var(--display); background: var(--surface-2); border-bottom: 0; padding-block: 14px }
+mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow: 0 0 0 1px var(--ent-bg) }
+.vazio { padding: 40px 16px; text-align: center; color: var(--ink-2) }
+.vazio b { display: block; color: var(--ink); font-size: 16px; margin-bottom: 4px }
+.rodape { margin-block: 16px 40px; display: flex; flex-wrap: wrap; gap: 6px 20px; justify-content: space-between; font-size: 12.5px; color: var(--ink-2) }
+.toast { position: fixed; left: 0; right: 0; margin: 0 auto; width: fit-content; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateY(20px); opacity: 0; background: var(--ink); color: var(--surface); font-weight: 600; font-size: 14px; padding: 10px 16px; border-radius: 10px; box-shadow: var(--shadow); transition: opacity .2s, transform .2s; pointer-events: none; z-index: 20; max-width: calc(100% - 32px) }
+.toast.on { opacity: 1; transform: none }
+.so-print { display: none }
+
+/* Abas */
+.abas { display: flex; gap: 4px; border-bottom: 1px solid var(--rule); margin-bottom: 14px }
+.abas button { font: 700 14px var(--body); color: var(--ink-2); background: none; border: 0; border-bottom: 3px solid transparent; padding: 10px 14px 9px; cursor: pointer; margin-bottom: -1px }
+.abas button:hover { color: var(--ink) }
+.abas button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--gold) }
+
+/* Novidades (mesmo desenho do Meta Master, nas cores desta página) */
+#novidades:empty { display: none }
+#novidades { margin-top: 12px }
+.nv { background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--won); border-radius: 12px; padding: 10px 14px; box-shadow: var(--shadow) }
+.nv.nada { border-left-color: var(--rule) }
+.nv-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap }
+.nv-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--won); flex: none; animation: nvPulso 1.9s infinite }
+@keyframes nvPulso { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--won) 55%, transparent) } 70% { box-shadow: 0 0 0 8px transparent } 100% { box-shadow: 0 0 0 0 transparent } }
+.nv-tx { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.35 }
+.nv-tx b { color: var(--won); font-variant-numeric: tabular-nums }
+.nv-tx small { display: block; font-size: 12px; font-weight: 500; color: var(--ink-2) }
+.nv.nada .nv-tx { color: var(--ink-2) }
+.nv-ac { display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap }
+.nv-bt { font: 700 12px var(--body); color: var(--won); background: var(--won-bg); border: 1px solid color-mix(in srgb, var(--won) 35%, transparent); border-radius: 8px; padding: 6px 11px; cursor: pointer }
+.nv-bt.lim, .nv.nada .nv-bt { color: var(--ink-2); background: var(--surface-2); border-color: var(--rule) }
+.nv-tk { margin-top: 9px; border-top: 1px solid var(--rule); padding-top: 8px; display: flex; align-items: center; gap: 9px; overflow: hidden }
+.nv-tklb { font-size: 10.5px; font-weight: 800; letter-spacing: .06em; color: var(--won); white-space: nowrap; flex: none }
+.nv-tkvp { flex: 1; overflow: hidden; min-width: 0 }
+.nv-tkmv { display: inline-block; white-space: nowrap; padding-left: 100%; font-size: 13px; font-weight: 600; color: var(--ink); animation: nvRoda 30s linear infinite }
+.nv-tkmv > span { margin-right: 34px } .nv-tkmv i { font-style: normal; color: var(--ink-2); font-weight: 500 } .nv-tkmv b { color: var(--won) } .nv-tkmv b.neg { color: var(--est) }
+.nv-tk:hover .nv-tkmv { animation-play-state: paused }
+@keyframes nvRoda { to { transform: translateX(-100%) } }
+.nv-tb { margin-top: 10px; overflow-x: auto; border: 1px solid var(--rule); border-radius: 10px }
+.nv-tb th { position: static }
+.nv-tb td { font-size: 13.5px }
+.nv-tb td.neg { color: var(--est) }
+.nv-pill { display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; margin-right: 6px; background: var(--won-bg); color: var(--won) }
+.nv-pill.alt { background: var(--neg-bg); color: var(--neg) } .nv-pill.rem { background: var(--est-bg); color: var(--est) }
+
+/* Formas de pagamento */
+.pgview { display: grid; gap: 22px }
+.pgh { font: 800 18px/1.2 var(--display); margin: 0 0 10px; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap }
+.pgh small { font: 500 13px var(--body); color: var(--ink-2) }
+.lista.rolar { overflow-x: auto }
+.lista.curta { max-width: 900px }
+.pgres td.dif { color: var(--ink-2) }
+.pgres tr.tot td.dif { color: var(--surface) }
+.pgcli th.c, .pgcli td.c { text-align: center }
+.px { display: inline-flex; align-items: center; gap: 7px; font-variant-numeric: tabular-nums; color: var(--ink-2); font-size: 13.5px }
+.px b { font-size: 11.5px; font-weight: 700; color: var(--ink); background: var(--surface-2); border: 1px solid var(--rule); border-radius: 6px; padding: 1px 6px; min-width: 34px; text-align: center }
+.px > span { min-width: 64px; text-align: left }
+.px i { font-style: normal; color: var(--gold); margin-left: 1px }
+.px.av { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-2) }
+.pgres td { padding-block: 9px }
+.pgres tr.sub td { background: var(--surface-2); font-weight: 700 }
+.pgres tr.tot td { background: var(--ink); color: var(--surface); font-weight: 800; border-bottom: 0 }
+.pgnota { margin: 8px 2px 0; font-size: 12.5px; color: var(--ink-2) }
+.pgnota:empty { display: none }
+.pgcli td { border-bottom: 0 }
+.pgcli tr.pg-ini td { border-top: 1px solid var(--rule) }
+.pgcli tr.pg-cont td { padding-top: 2px }
+.pgcli td.det { font-size: inherit }
+.pgcli tr.zb td { background: color-mix(in srgb, var(--surface-2) 70%, var(--rule)) }
+.pgcli tr.za td { background: var(--surface) }
+.pgcli tbody tr:hover td { background: color-mix(in srgb, var(--surface-2) 40%, var(--rule)) }
+.pgcli tr.pg-tot td.r b { font-weight: 800; color: var(--ink) }
+.pgcli tr.pg-sub td:nth-child(4) { padding-left: 22px; position: relative }
+.pgcli tr.pg-sub td:nth-child(4)::before { content: "↳"; position: absolute; left: 6px; color: var(--gold) }
+.pgcli tr.pg-est td { color: var(--ink-2); text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--est) 60%, transparent) }
+.pgcli tr.pg-est td .pill, .pgcli tr.pg-est td a { text-decoration: none }
+.pgcli td { vertical-align: middle }
+
+/* Celular: cada venda vira um cartão */
+/* Celular: tudo em cartões, sem rolagem lateral */
+.so-cel { display: none }
+@media (max-width: 760px) {
+  .so-pc { display: none } .so-cel { display: inline }
+  .stage { padding-block: 20px 72px }
+  .stage .inner { gap: 16px }
+  h1 { font-size: 24px }
+  .eyebrow { line-height: 1.4; font-size: 11px }
+  .lead { margin-top: 6px; font-size: 14px }
+  .acoes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100% }
+  .acoes .btn { justify-content: center; padding: 11px 10px; font-size: 13.5px; white-space: nowrap }
+  .acoes #btnAtualizar { grid-column: 1 / -1 }
+  .kpis { grid-template-columns: 1fr 1fr; gap: 8px } .kpis .kpi:first-child { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap }
+  .kpis .kpi:first-child b { margin-top: 0 }
+  .kpi { padding: 11px 13px } .kpi b { font-size: 19px } .kpi small { font-size: 11px }
+  .painel { margin-top: -54px }
+  .status-grid { grid-template-columns: 1fr 1fr; gap: 8px }
+  .st { padding: 10px 12px } .st .n { font-size: 20px; margin-top: 4px }
+  .barra { padding-block: 10px }
+  .busca { flex-basis: 100% }
+  .busca kbd { display: none }
+  .pdd { width: 100% } .dd { flex: 1; justify-content: center } .pop { left: 0; right: auto; width: 100% }
+  .abas button { flex: 1; padding-inline: 8px }
+  .lista { overflow: visible }
+  .rodape { font-size: 12px }
+
+  /* Vendas: um cartão por venda */
+  #viewVendas.lista { background: none; border: 0; box-shadow: none }
+  #viewVendas table, #viewVendas tbody, #viewVendas tr, #viewVendas td { display: block }
+  #viewVendas thead { display: none }
+  #viewVendas tbody { display: grid; gap: 10px }
+  #viewVendas tbody tr { background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; box-shadow: var(--shadow); padding: 12px 14px; display: grid;
+    grid-template-columns: 1fr auto; grid-template-areas: "pitch status" "nome nome" "det det" "fone fone" "bruto liq"; gap: 6px 12px; align-items: center }
+  #viewVendas tbody tr:hover { background: var(--surface) }
+  #viewVendas tbody tr.vaga { margin-top: -6px; margin-left: 18px; background: var(--surface-2); box-shadow: none }
+  #viewVendas tr.vaga td { background: none; padding: 0 }
+  #viewVendas td { padding: 0; border: 0; white-space: normal; min-width: 0 }
+  td.c-pitch { grid-area: pitch } td.c-status { grid-area: status; justify-self: end }
+  td.c-nome { grid-area: nome; font-size: 16px }
+  td.c-det { grid-area: det; max-width: none } td.c-det:empty { display: none }
+  td.c-fone { grid-area: fone }
+  td.c-bruto { grid-area: bruto; text-align: left } td.c-liq { grid-area: liq; text-align: right }
+  td.c-bruto::before, td.c-liq::before { content: attr(data-label); display: block; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-2) }
+  #viewVendas tfoot { display: block } #viewVendas tfoot tr { display: flex; justify-content: space-between; gap: 10px; background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; padding: 12px 14px; margin-top: 10px }
+  #viewVendas tfoot td { background: none; padding: 0 } #viewVendas tfoot td:empty { display: none }
+
+  /* Formas de pagamento: resumo e clientes em cartões */
+  .pgh { font-size: 17px }
+  .lista.curta { max-width: none }
+  .pgview .lista { background: none; border: 0; box-shadow: none; overflow: visible }
+  .pgview table, .pgview tbody, .pgview tr, .pgview td, .pgview tfoot { display: block }
+  .pgview thead { display: none }
+  .pgres tbody { display: grid; gap: 6px }
+  .pgres tr { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "f v" "g o" "n pct"; gap: 2px 10px; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 10px 12px }
+  .pgres td { padding: 0; border: 0; background: none !important }
+  .pgres .c-f { grid-area: f; font-weight: 700 } .pgres .c-g { grid-area: g; color: var(--ink-2); font-size: 13px } .pgres .c-n { grid-area: n; color: var(--ink-2); font-size: 13px; text-align: left }
+  .pgres .c-v { grid-area: v; font-weight: 700 } .pgres .c-o { grid-area: o; font-size: 12.5px } .pgres .c-pct { grid-area: pct; font-size: 13px; color: var(--ink-2) }
+  .pgres .c-n::after { content: " pagamentos" } .pgres .c-o::before { content: "IF " } .pgres .c-o:has(.so-pc) { visibility: hidden }
+  .pgres tr.sub { background: var(--surface-2) } .pgres tr.tot { background: var(--ink); border-color: var(--ink) } .pgres tr.tot td { color: var(--surface) }
+  .pgcli tbody { display: grid; gap: 0 }
+  .pgcli tr { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "p s" "nm nm" "f v" "g c" "d d"; gap: 3px 10px; padding: 10px 12px; border: 1px solid var(--rule); border-top: 0; background: var(--surface) }
+  .pgcli tr.pg-ini { border-top: 1px solid var(--rule); border-radius: 12px 12px 0 0; margin-top: 10px }
+  .pgcli tr.pg-ini:first-child { margin-top: 0 }
+  .pgcli tr:not(.pg-tot):not(:has(+ tr.pg-cont)) { border-radius: 0 0 12px 12px }
+  .pgcli tr.pg-ini:not(.pg-tot):not(:has(+ tr.pg-cont)) { border-radius: 12px }
+  .pgcli td { padding: 0 !important; border: 0 !important; white-space: normal; min-width: 0; background: none !important }
+  .pgcli tr.zb { background: color-mix(in srgb, var(--surface-2) 70%, var(--rule)) }
+  .pgcli tr.pg-sub { border-top: 1px dashed var(--rule) }
+  .pgcli td:empty { display: none }
+  .pgcli .c-p { grid-area: p } .pgcli .c-s { grid-area: s; justify-self: end } .pgcli .c-nm { grid-area: nm; font-size: 15.5px }
+  .pgcli .c-f { grid-area: f } .pgcli .c-v { grid-area: v; font-weight: 700 } .pgcli .c-g { grid-area: g; font-size: 13px } .pgcli .c-x { grid-area: c; justify-self: end } .pgcli .c-d { grid-area: d; font-size: 12.5px }
+  .pgcli tr.pg-sub { padding-top: 6px; padding-left: 26px }
+  .pgcli tr.pg-sub td.c-f::before { left: -16px }
+  .pgcli tfoot tr { display: flex; justify-content: space-between; margin-top: 10px; border-radius: 12px; border-top: 1px solid var(--rule); font-weight: 800 }
+  .pgcli tfoot td:empty { display: none }
+  .nv-ac { margin-left: 0 }
+  .nv-tb table, .nv-tb tbody, .nv-tb tr, .nv-tb td { display: revert }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important } .kpi:hover, .st:hover, .st:active { transform: none } }
+
+/* Impressão: papel A4 deitado, tinta econômica, só o conteúdo */
+@media print {
+  @page { size: A4 landscape; margin: 12mm 12mm 14mm }
+  :root { --bg: #fff; --surface: #fff; --surface-2: #f3f5f8; --ink: #13293d; --ink-2: #4d6276; --rule: #cfd8e1 }
+  body { background: #fff; font-size: 10pt }
+  .stage { background: none; color: var(--ink); padding: 0 0 6mm; border-bottom: 2px solid var(--ink) }
+  .acoes, .barra, .painel, .toast, .copiar, .no-print, .abas { display: none !important }
+  .eyebrow { color: var(--gold) } .lead, .kpi span, .kpi small { color: var(--ink-2) }
+  .kpis { margin-top: 4mm } .kpi { transform: none; box-shadow: none; background: none; border: 1px solid var(--rule) } .kpi.ouro b { color: var(--gold) }
+  .so-print { display: block; margin: 4mm 0 2mm; font-size: 9.5pt; color: var(--ink-2) }
+  .lista { box-shadow: none; border: 0; border-radius: 0 }
+  th { position: static; background: none; border-bottom: 1.5px solid var(--ink); padding: 6px 8px } th button::after { content: "" !important }
+  td { padding: 5px 8px } tbody tr { break-inside: avoid; animation: none !important } thead { display: table-header-group }
+  .nome a { background: none; color: var(--ink) }
+  .rodape { margin: 4mm 0 0 }
+}
+</style>
+
+<header class="stage gutter">
+  <div class="inner">
+    <div class="topo">
+      <div>
+        <div class="eyebrow">Febracis Vitória · Pitch FGPC 24 e Pitch MCIS252 e Pitch CEOP17</div>
+        <h1>Mentoria Business — Combo 3 Mentorias</h1>
+        <p class="lead">Todas as vendas da Mentoria nos pitches.</p>
+        <p class="sync" id="sync" aria-live="polite"></p>
+      </div>
+      <div class="acoes" id="acoes">
+        <button type="button" class="btn btn-ouro" id="btnAtualizar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg><span>Atualizar</span></button>
+        <button type="button" class="btn btn-vidro" id="pdfVisao"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14"/></svg><span>Baixar PDF desta lista</span></button>
+        <button type="button" class="btn btn-vidro" id="pdfCompleto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 3h7l5 5v13H7z M14 3v5h5"/></svg><span>Relatório completo</span></button>
+      </div>
+    </div>
+    <div class="kpis" aria-live="polite">
+      <div class="kpi"><span>Vendas na lista</span><b id="kVendas">0</b><small id="kVendasS">de 33</small></div>
+      <div class="kpi"><span>Valor bruto</span><b id="kBruto">R$ 0,00</b><small>valor cheio da Mentoria</small></div>
+      <div class="kpi ouro"><span>Valor líquido</span><b id="kLiq">R$ 0,00</b><small>50% do bruto, conta para a meta</small></div>
+    </div>
+  </div>
+</header>
+
+<section class="painel gutter" aria-label="Filtrar por situação">
+  <div class="inner"><div class="status-grid" id="painel"></div><div id="novidades" aria-live="polite"></div></div>
+</section>
+
+<div class="barra gutter">
+  <div class="inner">
+    <div class="busca">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <label for="q" class="sr">Procurar venda</label>
+      <input id="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="Nome, telefone ou situação">
+      <kbd id="atalho" aria-hidden="true">/</kbd>
+      <button type="button" class="x" id="limpar" hidden>Limpar</button>
+    </div>
+    <div class="pdd" id="fPitch">
+      <button type="button" class="dd" id="ddPitch" aria-haspopup="listbox" aria-expanded="false" aria-controls="popPitch"><small>Pitch:</small> <b id="ddNome">Todos</b> <span class="q" id="ddQ"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button type="button" class="dd-x" id="ddLimpar" aria-label="Tirar o filtro de Pitch" title="Tirar o filtro de Pitch" hidden>✕</button>
+      <div class="pop" id="popPitch" hidden>
+        <input type="search" id="ddBusca" autocomplete="off" placeholder="Procurar campanha…" aria-label="Procurar campanha">
+        <div class="lst" id="ddLista" role="listbox" aria-label="Pitch"></div>
+      </div>
+    </div>
+    <div class="info"><span id="resultado" aria-live="polite"></span><button type="button" class="link-btn" id="resetar" hidden>Mostrar todas as vendas</button></div>
+  </div>
+</div>
+
+<main class="gutter">
+  <div class="inner">
+    <p class="so-print" id="filtroPrint"></p>
+    <div class="abas" role="tablist" aria-label="O que mostrar">
+      <button type="button" role="tab" id="abaVendas" aria-selected="true" aria-controls="viewVendas">Vendas</button>
+      <button type="button" role="tab" id="abaPg" aria-selected="false" aria-controls="viewPg">Formas de pagamento</button>
+    </div>
+    <section id="viewPg" class="pgview" role="tabpanel" aria-labelledby="abaPg" hidden>
+      <div class="pgbloco">
+        <h2 class="pgh">Formas de pagamento <small>só o que entrou para a Mentoria</small></h2>
+        <div class="lista rolar curta"><table class="pgres">
+          <thead><tr><th>Forma</th><th>Gateway</th><th class="r">Pagamentos</th><th class="r">Valor recebido</th><th class="r">Diferença (IF)</th><th class="r">% do recebido</th></tr></thead>
+          <tbody id="pgResumo"></tbody>
+        </table></div>
+        <p class="pgnota" id="pgNota"></p>
+      </div>
+      <div class="pgbloco">
+        <h2 class="pgh">Como cada cliente pagou <small id="pgConta"></small></h2>
+        <div class="lista rolar"><table class="pgcli">
+          <thead><tr><th>Pitch</th><th>Cliente</th><th>Situação</th><th>Forma</th><th>Gateway</th><th class="c">Parcelas</th><th>Data</th><th class="r">Valor</th></tr></thead>
+          <tbody id="pgCorpo"></tbody>
+          <tfoot><tr><td></td><td id="pgTLabel">Total recebido</td><td></td><td></td><td></td><td></td><td></td><td class="r" id="pgTotal"></td></tr></tfoot>
+        </table></div>
+      </div>
+    </section>
+    <div class="lista" id="viewVendas" role="tabpanel" aria-labelledby="abaVendas">
+      <table>
+        <caption class="sr">Vendas da Mentoria Business</caption>
+        <thead><tr>
+          <th data-col="p" aria-sort="none"><button type="button">Pitch</button></th>
+          <th data-col="n" aria-sort="none"><button type="button">Cliente</button></th>
+          <th data-col="k" aria-sort="none"><button type="button">Situação</button></th>
+          <th>Detalhe</th>
+          <th data-col="c" aria-sort="none"><button type="button">Telefone</button></th>
+          <th data-col="b" class="r" aria-sort="none"><button type="button">Bruto</button></th>
+          <th class="r">Líquido</th>
+        </tr></thead>
+        <tbody id="corpo"></tbody>
+        <tfoot><tr><td></td><td id="tLabel">Total</td><td></td><td></td><td></td><td class="r" id="tBruto"></td><td class="r" id="tLiq"></td></tr></tfoot>
+      </table>
+      <div class="vazio" id="vazio" hidden><b>Nenhuma venda encontrada</b>Confira a grafia ou toque em “Mostrar todas as vendas”.</div>
+    </div>
+    <div class="rodape">
+      <span>Toque no nome para abrir a venda no Sales Cube. ¹ A venda também inclui o IF (Inteligência Financeira), que não entra nos valores.</span>
+      <span id="gerado"></span>
+    </div>
+  </div>
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const MODO = 'arquivo', FONTE = 'https://dashboardcomercialpa-default-rtdb.firebaseio.com/relatorios/mentoria-business-ywq9rv/atual.json', PC = 'http://localhost:8765';
+let DADOS = {"schema": 1, "gerado": "", "conferido": "", "rodada": 0, "campanhas": [], "vendas": []};
+if (MODO === 'arquivo') { try { const g = JSON.parse(localStorage.getItem('mb-arquivo') || 'null'); if (g && g.dados && g.dados.vendas && (g.dados.rodada || 0) >= (DADOS.rodada || 0)) DADOS = g.dados; } catch (e) {} }
+const ST = { won: 'Fechado', ent: 'Com entrada', neg: 'Em negociação', est: 'Estornado' };
+const ST_CURTO = { won: 'Fechado', ent: 'Entrada', neg: 'Negociação', est: 'Estornado' };
+const ORD = { won: 0, est: 1, ent: 2, neg: 3 };
+const brl = v => v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const norm = s => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const detalhe = o => (o || '').replace(/⚠\s*venceu/, 'fechamento venceu em').replace(/^em (\d)/, 'devolvido em $1').replace(/ · R\$ (\S+) devolvida/, ' · entrada de R$ $1').replace(/^R\$ ([\d.,]+)/, 'pagou R$ $1');
+let V = [];
+function preparar() { V = DADOS.vendas.map((v, i) => {
+  const det = detalhe(v.obs);
+  return { ...v, i, det, venc: /venceu/.test(v.obs), vagas: v.vagas || [], txt: norm([v.p, v.n, ST[v.k], ST_CURTO[v.k], det, v.c, v.c.replace(/\D/g, ''), ...(v.vagas || []).map(x => x.n + ' vaga ' + (x.c || '') + ' ' + (x.c || '').replace(/\D/g, ''))].join(' ')) };
+}); }
+preparar();
+const reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const estado = { q: '', pitch: 'todos', status: 'todos', col: null, dir: 1 };
+try { const s = JSON.parse(localStorage.getItem('mb-busca') || 'null'); if (s) { estado.pitch = s.pitch || 'todos'; estado.status = s.status || 'todos'; } } catch (e) {}
+const salvar = () => { try { localStorage.setItem('mb-busca', JSON.stringify({ pitch: estado.pitch, status: estado.status })); } catch (e) {} };
+
+/* Painel de situação */
+const CARTOES = [['todos', 'Todas'], ['won', 'Fechado'], ['ent', 'Com entrada'], ['neg', 'Em negociação'], ['venc', '⚠ Prazo vencido'], ['est', 'Estornado']];
+const painel = document.getElementById('painel');
+CARTOES.forEach(([k, lbl]) => {
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'st ' + k; b.dataset.val = k; b.id = 'st-' + k;
+  b.innerHTML = `<span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M5 12.5l4.5 4.5L19 7"/></svg>Ativo</span><span class="t">${lbl}</span><span class="n">0</span><span class="v"></span>`;
+  const escolher = soma => {
+    let atual = selStatus();
+    if (k === 'todos') atual = [];
+    else if (soma) atual = atual.includes(k) ? atual.filter(x => x !== k) : atual.concat(k);
+    else atual = atual.length === 1 && atual[0] === k ? [] : [k];
+    estado.status = atual.length ? atual : 'todos'; salvar(); render(true);
+  };
+  // clique simples: só este card (de novo = limpa). Ctrl/Cmd + clique, ou SEGURAR no celular: soma ou tira este card.
+  let segura = null, segurou = false;
+  b.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse') return;
+    segurou = false;
+    segura = setTimeout(() => { segurou = true; try { navigator.vibrate && navigator.vibrate(30); } catch (x) {} escolher(true); toast('Somando situações: toque e segure outro card para juntar.'); }, 480);
+  });
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(t => b.addEventListener(t, () => clearTimeout(segura)));
+  b.addEventListener('contextmenu', e => { if (segurou) e.preventDefault(); });
+  b.addEventListener('click', e => {
+    if (segurou) { segurou = false; e.preventDefault(); return; }
+    escolher(e.ctrlKey || e.metaKey);
+  });
+  painel.appendChild(b);
+});
+/* Pitch */
+const ddBtn = document.getElementById('ddPitch'), ddPop = document.getElementById('popPitch'), ddBusca = document.getElementById('ddBusca'), ddLista = document.getElementById('ddLista');
+let qtdPitch = () => 0;   // render() troca por uma que conta com a busca e o status atuais
+function escolherPitch(val) { estado.pitch = val; salvar(); fecharPitch(true); render(true); }
+function listarPitch() {
+  const f = norm(ddBusca.value).trim();
+  const camps = (DADOS.campanhas || []).slice().reverse().filter(c => norm(c).includes(f));   // a mais nova primeiro
+  const item = (val, lbl) => { const n = qtdPitch(val); return `<button type="button" role="option" class="it${n ? '' : ' zero'}" data-val="${esc(val)}" aria-selected="${estado.pitch === val}"><span>${esc(lbl)}</span><span class="q">${n}</span></button>`; };
+  ddLista.innerHTML = (f ? '' : item('todos', 'Todos') + '<div class="sep"></div>') + camps.map(c => item(c, c)).join('') || '<div class="vazio-p">Nenhuma campanha com esse nome.</div>';
+}
+function abrirPitch() { ddPop.hidden = false; ddBtn.setAttribute('aria-expanded', 'true'); ddBusca.value = ''; listarPitch(); ddBusca.focus(); }
+function fecharPitch(foco) { if (ddPop.hidden) return; ddPop.hidden = true; ddBtn.setAttribute('aria-expanded', 'false'); if (foco) ddBtn.focus(); }
+ddBtn.addEventListener('click', e => { e.stopPropagation(); ddPop.hidden ? abrirPitch() : fecharPitch(); });
+document.getElementById('ddLimpar').addEventListener('click', () => escolherPitch('todos'));
+ddBusca.addEventListener('input', listarPitch);
+ddLista.addEventListener('click', e => { const b = e.target.closest('.it'); if (b) escolherPitch(b.dataset.val); });
+document.addEventListener('click', e => { if (!ddPop.hidden && !document.getElementById('fPitch').contains(e.target)) fecharPitch(); });
+ddPop.addEventListener('keydown', e => {
+  const its = [...ddLista.querySelectorAll('.it')], i = its.indexOf(document.activeElement);
+  if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); fecharPitch(true); }
+  else if (e.key === 'ArrowDown') { e.preventDefault(); (its[i + 1] || its[0])?.focus(); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); i <= 0 ? ddBusca.focus() : its[i - 1].focus(); }
+  else if (e.key === 'Enter' && document.activeElement === ddBusca && its[0]) { e.preventDefault(); its[0].click(); }
+});
+
+function selStatus() { return Array.isArray(estado.status) ? estado.status.slice() : (estado.status === 'todos' ? [] : [estado.status]); }
+const passaStatus = (v, s) => Array.isArray(s) ? (!s.length || s.some(x => passaStatus(v, x))) : (s === 'todos' || (s === 'venc' ? v.venc : v.k === s));
+const passaPitch = (v, p) => p === 'todos' || v.p === p;
+function termos() { return norm(estado.q).split(/\s+/).filter(Boolean) }
+function casa(v, ts) { return ts.every(t => v.txt.includes(t) || (t.replace(/\D/g, '').length >= 3 && v.txt.includes(t.replace(/\D/g, '')))) }
+function realce(texto, ts) {
+  if (!ts.length) return esc(texto);
+  const n = norm(texto), marcas = [];
+  ts.forEach(t => { let p = n.indexOf(t); while (p >= 0) { marcas.push([p, p + t.length]); p = n.indexOf(t, p + t.length); } });
+  if (!marcas.length) return esc(texto);
+  marcas.sort((a, b) => a[0] - b[0]);
+  let out = '', pos = 0;
+  marcas.forEach(([a, b]) => { if (a < pos) return; out += esc(texto.slice(pos, a)) + '<mark>' + esc(texto.slice(a, b)) + '</mark>'; pos = b; });
+  return out + esc(texto.slice(pos));
+}
+function listaAtual() {
+  const ts = termos();
+  let l = V.filter(v => casa(v, ts) && passaPitch(v, estado.pitch) && passaStatus(v, estado.status));
+  if (estado.col) {
+    const c = estado.col, val = v => c === 'b' ? v.b : c === 'k' ? ORD[v.k] : norm(v[c]);
+    l.sort((a, b) => { const x = val(a), y = val(b); return (x < y ? -1 : x > y ? 1 : a.i - b.i) * estado.dir; });
+  }
+  return l;
+}
+function descricaoFiltro() {
+  const p = [];
+  if (selStatus().length) p.push(selStatus().map(k => CARTOES.find(c => c[0] === k)[1].replace('⚠ ', '')).join(' + '));
+  if (estado.pitch !== 'todos') p.push('Pitch ' + estado.pitch);
+  if (estado.q) p.push('busca “' + estado.q.trim() + '”');
+  return p.join(' · ');
+}
+
+/* Números que contam até o valor */
+const anim = new Map();
+function conta(el, alvo, fmt) {
+  const de = anim.get(el) ?? 0; anim.set(el, alvo);
+  el.textContent = fmt(alvo); return;
+  const t0 = performance.now(), dur = 450;
+  const passo = t => { const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = fmt(de + (alvo - de) * e); if (k < 1 && anim.get(el) === alvo) requestAnimationFrame(passo); };
+  requestAnimationFrame(passo);
+}
+
+function selo() { return ''; }   // novidades ficam na barra de novidades, não na linha (pedido do Pablo)
+function render(animar) {
+  const ts = termos();
+  const base = V.filter(v => casa(v, ts));
+  document.querySelectorAll('#painel .st').forEach(b => {
+    const g = base.filter(v => passaPitch(v, estado.pitch) && passaStatus(v, b.dataset.val));
+    const s = g.reduce((a, v) => a + v.b, 0);
+    const sel = selStatus(), ativo = b.dataset.val === 'todos' ? !sel.length : sel.includes(b.dataset.val);
+    b.setAttribute('aria-pressed', ativo);
+    b.title = b.dataset.val === 'todos' ? 'Mostrar todas' : ativo ? 'Selecionado. Clique de novo para limpar · Ctrl + clique tira só este' : 'Clique para filtrar · Ctrl + clique soma este card aos selecionados';
+    b.querySelector('.n').textContent = g.length;
+    b.querySelector('.v').textContent = b.dataset.val === 'venc' ? (g.length ? 'cobrar o saldo' : 'nenhum no momento') : 'R$ ' + brl(s);
+  });
+  qtdPitch = val => base.filter(v => passaPitch(v, val) && passaStatus(v, estado.status)).length;
+  const comPitch = estado.pitch !== 'todos';
+  document.getElementById('ddNome').textContent = comPitch ? estado.pitch : 'Todos';
+  document.getElementById('ddQ').textContent = qtdPitch(estado.pitch);
+  ddBtn.classList.toggle('on', comPitch);
+  document.getElementById('ddLimpar').hidden = !comPitch;
+  if (!ddPop.hidden) listarPitch();
+  const lista = listaAtual();
+  document.querySelectorAll('th[data-col]').forEach(th => th.setAttribute('aria-sort', th.dataset.col === estado.col ? (estado.dir === 1 ? 'ascending' : 'descending') : 'none'));
+  document.getElementById('corpo').innerHTML = lista.map((v, n) => `<tr${animar && !reduz && n < 18 ? ` class="entra" style="animation-delay:${n * 18}ms"` : ''}>
+    <td class="c-pitch"><span class="pitch">${realce(v.p, ts)}</span></td>
+    <td class="c-nome nome"><a href="${esc(v.link)}" target="_blank" rel="noopener" title="Abrir a venda no Sales Cube">${realce(v.n, ts)}</a>${v.if_ ? '<sup title="Também inclui o IF">¹</sup>' : ''}${selo(v)}</td>
+    <td class="c-status"><span class="pill ${v.k}">${ST_CURTO[v.k]}</span></td>
+    <td class="c-det det${v.venc ? ' venc' : ''}">${v.det ? (v.venc ? '⚠ ' : '') + realce(v.det, ts) : ''}</td>
+    <td class="c-fone"><span class="fone"><span>${realce(v.c, ts)}</span>${v.c && v.c !== '—' ? `<button type="button" class="copiar" data-fone="${esc(v.c)}" aria-label="Copiar o telefone de ${esc(v.n)}">Copiar</button>` : ''}</span></td>
+    <td class="c-bruto r" data-label="Bruto">${brl(v.b)}</td><td class="c-liq r liq" data-label="Líquido">${brl(v.b / 2)}</td></tr>` + v.vagas.map((x, j) => `<tr class="vaga${animar && !reduz && n < 18 ? ' entra' : ''}"${animar && !reduz && n < 18 ? ` style="animation-delay:${n * 18 + 9}ms"` : ''}>
+    <td class="c-pitch"><span class="pitch">${esc(v.p)}</span></td>
+    <td class="c-nome nome"><span class="seta" aria-hidden="true">↳</span>${x.link ? `<a href="${esc(x.link)}" target="_blank" rel="noopener" title="Abrir no Sales Cube a venda onde está esta vaga">${realce(x.n, ts)}</a>` : realce(x.n, ts)}</td>
+    <td class="c-status"><span class="pill ${v.k}">${ST_CURTO[v.k]}</span></td>
+    <td class="c-det det">${j + 2}ª vaga · compra de ${esc(v.n.split(' ')[0])}</td>
+    <td class="c-fone">${x.c ? `<span class="fone"><span>${realce(x.c, ts)}</span><button type="button" class="copiar" data-fone="${esc(x.c)}" aria-label="Copiar o telefone de ${esc(x.n)}">Copiar</button></span>` : '<span class="det">sem telefone no ZS</span>'}</td>
+    <td class="c-bruto r" data-label="Bruto">${brl(x.b)}</td><td class="c-liq r liq" data-label="Líquido">${brl(x.b / 2)}</td></tr>`).join('')).join('');
+  const tb = lista.reduce((s, v) => s + v.b, 0);
+  conta(document.getElementById('kVendas'), lista.length, x => Math.round(x));
+  conta(document.getElementById('kBruto'), tb, x => 'R$ ' + brl(x));
+  conta(document.getElementById('kLiq'), tb / 2, x => 'R$ ' + brl(x));
+  const nvag = lista.reduce((s, v) => s + 1 + v.vagas.length, 0);
+  document.getElementById('kVendasS').textContent = 'de ' + V.length + ' vendas · ' + nvag + (nvag === 1 ? ' vaga' : ' vagas') + ' na lista';
+  document.getElementById('tLabel').textContent = 'Total · ' + lista.length + (lista.length === 1 ? ' venda' : ' vendas') + ' · ' + nvag + (nvag === 1 ? ' vaga' : ' vagas');
+  document.getElementById('tBruto').textContent = brl(tb);
+  document.getElementById('tLiq').textContent = brl(tb / 2);
+  document.getElementById('vazio').hidden = lista.length > 0;
+  document.querySelector('tfoot').hidden = lista.length === 0;
+  const filtro = descricaoFiltro();
+  document.getElementById('resultado').textContent = filtro ? `${lista.length} de ${V.length} vendas · ${filtro}` : `${V.length} vendas.` + (matchMedia('(max-width: 760px)').matches ? ' Segure um card para somar situações.' : ' Clique no título de uma coluna para ordenar · Ctrl + clique nos cards soma situações.');
+  document.getElementById('resetar').hidden = !filtro;
+  document.getElementById('limpar').hidden = !estado.q;
+  document.getElementById('atalho').hidden = !!estado.q;
+  renderPg(lista, ts);
+  document.getElementById('filtroPrint').textContent ='Lista: ' + (filtro || 'todas as vendas') + ' · ' + lista.length + ' vendas · bruto R$ ' + brl(tb) + ' · líquido R$ ' + brl(tb / 2);
+}
+
+/* Interações */
+const q = document.getElementById('q');
+let tq; q.addEventListener('input', () => { estado.q = q.value; clearTimeout(tq); tq = setTimeout(() => render(false), 60); });
+document.getElementById('limpar').addEventListener('click', () => { q.value = ''; estado.q = ''; render(true); q.focus(); });
+document.getElementById('resetar').addEventListener('click', () => { q.value = ''; Object.assign(estado, { q: '', pitch: 'todos', status: 'todos' }); salvar(); render(true); });
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && document.activeElement !== q && !e.ctrlKey && !e.metaKey) { e.preventDefault(); q.focus(); }
+  if (e.key === 'Escape' && document.activeElement === q && q.value) { q.value = ''; estado.q = ''; render(false); }
+});
+document.querySelectorAll('th[data-col] button').forEach(b => b.addEventListener('click', () => {
+  const c = b.parentElement.dataset.col;
+  if (estado.col === c) { if (estado.dir === 1) estado.dir = -1; else { estado.col = null; estado.dir = 1; } } else { estado.col = c; estado.dir = 1; }
+  render(true);
+}));
+const toastEl = document.getElementById('toast'); let tt;
+function toast(msg) { toastEl.textContent = msg; toastEl.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toastEl.classList.remove('on'), 2200); }
+const copiarFone = async e => {
+  const b = e.target.closest('.copiar'); if (!b) return;
+  try { await navigator.clipboard.writeText(b.dataset.fone); b.textContent = 'Copiado'; b.classList.add('ok'); toast('Telefone copiado: ' + b.dataset.fone); }
+  catch (err) { const s = getSelection(), r = document.createRange(); r.selectNodeContents(b.previousElementSibling); s.removeAllRanges(); s.addRange(r); toast('Telefone selecionado. Use Ctrl+C para copiar.'); }
+  setTimeout(() => { b.textContent = 'Copiar'; b.classList.remove('ok'); }, 1600);
+};
+document.getElementById('corpo').addEventListener('click', copiarFone);
+
+/* PDF */
+function carregar(src) { return new Promise((ok, erro) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = erro; document.head.appendChild(s); }); }
+let libs;
+function libsPdf() {
+  libs = libs || carregar('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js').then(() => carregar('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js'));
+  return libs;
+}
+const pdfTxt = s => String(s).replace(/⚠\s*/g, '! ').replace(/[“”]/g, '"');
+const PITCHES = 'Pitch FGPC 24 e Pitch MCIS252 e Pitch CEOP17';
+async function gerarPdf(lista, filtro, comContatos) {
+  await libsPdf();
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  const W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight(), M = 12;
+  const tb = lista.reduce((s, v) => s + v.b, 0);
+  const linhas = []; lista.forEach((v, n) => { linhas.push({ v, n: n + 1 }); v.vagas.forEach((x, j) => linhas.push({ v, x, j })); });
+  const nvag = linhas.length;
+  doc.setFillColor(15, 34, 54); doc.rect(0, 0, W, 30, 'F');
+  doc.setTextColor(227, 178, 90); doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.text(('Febracis Vitória · ' + PITCHES).toUpperCase(), M, 10);
+  doc.setTextColor(255, 255, 255); doc.setFontSize(17); doc.text('Mentoria Business — Combo 3 Mentorias', M, 19);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(185, 200, 214);
+  doc.text(pdfTxt('Lista: ' + (filtro || 'todas as vendas') + ' · líquido = 50% do bruto'), M, 25.5);
+  doc.setFont('helvetica', 'bold'); doc.setTextColor(255, 255, 255); doc.setFontSize(12);
+  doc.text(lista.length + ' vendas · ' + nvag + ' vagas', W - M - 120, 19, { align: 'right' });
+  doc.text('Bruto R$ ' + brl(tb), W - M - 92, 19);
+  doc.setTextColor(227, 178, 90); doc.text('Líquido R$ ' + brl(tb / 2), W - M, 19, { align: 'right' });
+  const cor = { won: [31, 122, 77], ent: [138, 93, 12], neg: [42, 99, 184], est: [179, 38, 30] };
+  const base = {
+    theme: 'plain', margin: { left: M, right: M, bottom: 14 },
+    styles: { font: 'helvetica', fontSize: 8.6, cellPadding: { top: 2.2, bottom: 2.2, left: 2, right: 2 }, textColor: [19, 41, 61], overflow: 'ellipsize', lineColor: [217, 225, 232], lineWidth: { bottom: .2 } },
+    headStyles: { fontStyle: 'bold', fontSize: 7.4, textColor: [77, 98, 118], lineColor: [19, 41, 61], lineWidth: { bottom: .5 } },
+    footStyles: { fontStyle: 'bold', fontSize: 9.5, lineColor: [19, 41, 61], lineWidth: { top: .5 } }
+  };
+  doc.autoTable({ ...base, startY: 36,
+    head: [['#', 'Pitch', 'Cliente', 'Situação', 'Detalhe', 'Telefone', 'Bruto', 'Líquido']],
+    body: linhas.map(({ v, n, x, j }) => x ? ['', v.p, '   > ' + x.n, ST_CURTO[v.k].toUpperCase(), (j + 2) + 'ª vaga · compra de ' + v.n.split(' ')[0], x.c || '—', brl(x.b), brl(x.b / 2)] : [n, v.p, v.n + (v.if_ ? ' ¹' : ''), ST_CURTO[v.k].toUpperCase(), pdfTxt((v.venc ? '! ' : '') + v.det), v.c, brl(v.b), brl(v.b / 2)]),
+    foot: [['', '', 'Total · ' + lista.length + ' vendas · ' + nvag + ' vagas', '', '', '', brl(tb), brl(tb / 2)]],
+    columnStyles: { 0: { cellWidth: 8, textColor: [176, 125, 34], fontStyle: 'bold' }, 1: { cellWidth: 20 }, 2: { cellWidth: 72, fontStyle: 'bold' }, 3: { cellWidth: 26, fontStyle: 'bold' }, 4: { cellWidth: 62 }, 5: { cellWidth: 30 }, 6: { cellWidth: 26, halign: 'right' }, 7: { cellWidth: 26, halign: 'right' } },
+    didParseCell: d => {
+      if (d.section !== 'body') { if (d.column.index >= 6) d.cell.styles.halign = 'right'; return; }
+      const { v, x } = linhas[d.row.index];
+      if (x) { d.cell.styles.fillColor = [243, 245, 248]; if (d.column.index === 2) d.cell.styles.fontStyle = 'normal'; }
+      if (d.column.index === 3) d.cell.styles.textColor = cor[v.k];
+      if (d.column.index === 4 && v.venc && !x) { d.cell.styles.textColor = cor.est; d.cell.styles.fontStyle = 'bold'; }
+      if (d.column.index === 7) d.cell.styles.textColor = [77, 98, 118];
+    },
+    didDrawCell: d => { if (d.section === 'body' && d.column.index === 2) { const l = linhas[d.row.index]; doc.link(d.cell.x, d.cell.y, d.cell.width, d.cell.height, { url: l.x ? l.x.link : l.v.link }); } }
+  });
+  if (comContatos) {
+    const cl = [];
+    lista.filter(v => v.k === 'won').forEach(v => { cl.push([v.n, v.p, v.c, '']); v.vagas.forEach((x, j) => cl.push([x.n, v.p, x.c || '—', (j + 2) + 'ª vaga · compra de ' + v.n.split(' ')[0]])); });
+    cl.sort((a, b) => norm(a[0]) < norm(b[0]) ? -1 : 1);
+    doc.addPage();
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(19, 41, 61); doc.text('Contatos dos fechados', M, 16);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(77, 98, 118); doc.text(cl.length + ' pessoas · em ordem alfabética', W - M, 16, { align: 'right' });
+    doc.autoTable({ ...base, startY: 22,
+      head: [['#', 'Pitch', 'Cliente', 'Contato', 'Situação']],
+      body: cl.map((c, i) => [i + 1, c[1], c[3] ? c[0] + '  (' + c[3] + ')' : c[0], c[2], 'FECHADO']),
+      columnStyles: { 0: { cellWidth: 10, textColor: [176, 125, 34], fontStyle: 'bold' }, 1: { cellWidth: 24 }, 2: { cellWidth: 130, fontStyle: 'bold' }, 3: { cellWidth: 50 }, 4: { cellWidth: 30, textColor: cor.won, fontStyle: 'bold' } },
+      didParseCell: d => { if (d.section === 'body' && cl[d.row.index][3]) { d.cell.styles.fillColor = [243, 245, 248]; if (d.column.index === 2) d.cell.styles.fontStyle = 'normal'; } }
+    });
+  }
+  const pags = doc.getNumberOfPages();
+  for (let p = 1; p <= pags; p++) {
+    doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(138, 153, 168);
+    doc.text('¹ A venda também inclui o IF (Inteligência Financeira), fora dos valores · Dados do Sales Cube de ' + DADOS.gerado, M, H - 7);
+    doc.text('Página ' + p + ' de ' + pags, W - M, H - 7, { align: 'right' });
+  }
+  return doc.output('blob');
+}
+
+/* Faixa "de quando são os dados" */
+const syncEl = document.getElementById('sync');
+let syncUlt = ['', ''];
+// "22/10/2026 às 22:30" → Date
+function lerDataBr(s) { const m = /(\d{2})\/(\d{2})\/(\d{4})\D+(\d{2}):(\d{2})/.exec(s || ''); return m ? new Date(+m[3], m[2] - 1, +m[1], +m[4], +m[5]) : null; }
+const p2 = n => String(n).padStart(2, '0');
+const hhmm = d => p2(d.getHours()) + ':' + p2(d.getMinutes());
+const mesmoDia = (a, b) => a.toDateString() === b.toDateString();
+function quando(d, agora) {
+  const min = Math.round((agora - d) / 60000);
+  if (min < 1) return 'agora';
+  if (mesmoDia(d, agora)) return min < 60 ? 'há ' + min + ' min' : 'há ' + Math.floor(min / 60) + ' h';
+  const ontem = new Date(agora); ontem.setDate(ontem.getDate() - 1);
+  return (mesmoDia(d, ontem) ? 'de ontem, ' : 'de ' + p2(d.getDate()) + '/' + p2(d.getMonth() + 1) + ', ') + hhmm(d);
+}
+/* Cor pela idade da última conferência: verde até 2 h, amarelo no mesmo dia, vermelho em outro dia */
+function mostrarSync(estadoTxt, classe) {
+  syncUlt = [estadoTxt, classe];
+  const agora = new Date(), ger = lerDataBr(DADOS.gerado), conf = lerDataBr(DADOS.conferido) || ger;
+  let cor = '';
+  if (conf) cor = !mesmoDia(conf, agora) ? 'vermelho' : (agora - conf) / 60000 <= 120 ? 'verde' : 'amarelo';
+  syncEl.className = 'sync ' + (classe === 'busy' || classe === 'erro' ? classe : cor);
+  const gerTx = ger ? `<b class="idade" title="Lista gerada em ${esc(DADOS.gerado)}">${quando(ger, agora)}</b>` : `de <b>${esc(DADOS.gerado)}</b>`;
+  let confTx = '';
+  if (conf && ger && conf - ger >= 60000) confTx = ` · conferida <b class="idade" title="Conferida em ${esc(DADOS.conferido)}">${mesmoDia(conf, ger) ? 'às ' + hhmm(conf) : quando(conf, agora)}</b>`;
+  const velha = cor === 'vermelho' && classe !== 'busy' ? '<span class="velha">· confira antes de usar</span>' : '';
+  const est = classe === 'erro' ? `<span class="falha">· ⚠ ${esc(estadoTxt)}</span>`
+    : estadoTxt === 'sem novidades' ? '<span>· ✓ em dia com o ZS</span>'
+    : estadoTxt ? `<span>· ${esc(estadoTxt)}</span>` : '';
+  const bt = MODO === 'arquivo' ? `<button type="button" class="sync-bt"${classe === 'busy' ? ' disabled' : ''}>⟳ Conferir agora</button>` : '';
+  syncEl.innerHTML = `<span class="ponto" aria-hidden="true"></span><span>Dados do Sales Cube ${gerTx}${confTx}</span>${velha}${est}${bt}`;
+}
+syncEl.addEventListener('click', e => { if (e.target.closest('.sync-bt')) atualizar(); });
+setInterval(() => { if (syncUlt[1] !== 'busy') mostrarSync(syncUlt[0], syncUlt[1]); }, 60000);
+mostrarSync('');
+
+/* Salvar arquivo: no artifact pela capability downloads; no arquivo baixado, Blob + link */
+let dl = null;
+async function salvarBlob(nome, blob) {
+  if (dl) return dl.save({ filename: nome, data: blob });
+  const u = URL.createObjectURL(blob), a = document.createElement('a');
+  a.href = u; a.download = nome; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(u), 4000);
+}
+async function acao(btn, ocupado, fn) {
+  const span = btn.querySelector('span'), orig = span.textContent;
+  btn.disabled = true; span.textContent = ocupado;
+  try { await fn(); }
+  catch (e) {
+    if (e && e.code === 'declined') toast('Download cancelado.');
+    else if (e && e.code === 'rate_limited') toast('Aguarde alguns segundos e tente de novo.');
+    else toast((e && e.message) || 'Não deu certo agora. Tente de novo.');
+  } finally { btn.disabled = false; span.textContent = orig; }
+}
+const btnV = document.getElementById('pdfVisao'), btnC = document.getElementById('pdfCompleto');
+const btnA = document.getElementById('btnAtualizar'), btnArq = document.getElementById('btnArquivo');
+btnV.addEventListener('pointerenter', () => libsPdf().catch(() => {}), { once: true });
+btnV.addEventListener('click', () => acao(btnV, 'Preparando…', async () => {
+  if (aba === 'pg') await salvarBlob('Mentoria-Business-pagamentos.pdf', await gerarPdfPg(listaAtual(), descricaoFiltro()));
+  else await salvarBlob('Mentoria-Business-lista.pdf', await gerarPdf(listaAtual(), descricaoFiltro(), false));
+  toast('PDF pronto.');
+}));
+btnC.addEventListener('click', () => acao(btnC, 'Preparando…', async () => {
+  let blob;
+  if (MODO === 'artifact') { const r = await fetch('Mentoria-Business-Combo.pdf'); if (!r.ok) throw new Error('O relatório completo não está disponível agora.'); blob = await r.blob(); }
+  else { const todas = V.slice().sort((a, b) => ORD[a.k] - ORD[b.k] || a.i - b.i); blob = await gerarPdf(todas, '', true); }
+  await salvarBlob('Mentoria-Business-Combo.pdf', blob); toast('PDF pronto.');
+}));
+
+/* Atualizar (arquivo baixado): só LÊ a última lista publicada. Quem grava é o Publicar-Mentoria.ps1,
+   rodado no PC do Pablo pelo gatilho de chat "Atualizar Mentoria Business". */
+function comparar(antes, depois) {
+  const velho = {}; (antes.vendas || []).forEach(v => { velho[v.id] = v; });
+  let novos = 0, mudou = 0;
+  depois.vendas.forEach(v => {
+    const o = velho[v.id];
+    if (!o) { novos++; return; }
+    if (o.k !== v.k || (o.vagas || []).length !== (v.vagas || []).length || o.obs !== v.obs || o.b !== v.b) mudou++;
+  });
+  const ids = new Set(depois.vendas.map(v => v.id));
+  const sairam = (antes.vendas || []).filter(v => !ids.has(v.id)).length;
+  return { novos, mudou, sairam };
+}
+function guardar() { try { localStorage.setItem('mb-arquivo', JSON.stringify({ dados: DADOS })); } catch (e) {} }
+async function comTempo(url, ms) {
+  const c = new AbortController(), t = setTimeout(() => c.abort(), ms);
+  try { return await fetch(url, { signal: c.signal, cache: 'no-store' }); } finally { clearTimeout(t); }
+}
+async function lerJson(url) {
+  const r = await comTempo(url, 20000);
+  if (!r.ok) throw new Error('A lista publicada não respondeu (' + r.status + ').');
+  return r.json();
+}
+async function buscarFoto() {
+  const novo = await lerJson(FONTE);
+  if (!novo || !Array.isArray(novo.vendas)) throw new Error('Ainda não há lista publicada.');
+  if ((novo.schema || 1) > 1) throw new Error('Este arquivo está desatualizado. Baixe a versão nova.');
+  return novo;
+}
+function aplicar(novo, avisar) {
+  const c = comparar(DADOS, novo);
+  const igual = !c.novos && !c.mudou && !c.sairam;
+  DADOS = novo; preparar(); guardar(); registrarNovidades(); render(!igual);
+  const partes = [];
+  if (c.novos) partes.push(c.novos + (c.novos === 1 ? ' venda nova' : ' vendas novas'));
+  if (c.mudou) partes.push(c.mudou + (c.mudou === 1 ? ' mudou' : ' mudaram'));
+  if (c.sairam) partes.push(c.sairam + (c.sairam === 1 ? ' saiu da lista' : ' saíram da lista'));
+  mostrarSync(igual ? 'sem novidades' : partes.join(' · '), 'ok');
+  if (avisar) toast(igual ? 'Lista em dia. Nenhuma novidade.' : 'Atualizado: ' + partes.join(', ') + '.');
+}
+async function atualizar() {
+  btnA.classList.add('girando');
+  await acao(btnA, 'Atualizando…', async () => {
+    try {
+      mostrarSync('buscando a última lista publicada…', 'busy');
+      aplicar(await buscarFoto(), true);
+    } catch (e) {
+      const sem = !navigator.onLine || (e && e.name === 'AbortError') || /Failed to fetch|NetworkError|Load failed/i.test(String(e && e.message));
+      mostrarSync(sem ? 'sem conexão, mostrando a última lista que chegou' : 'não consegui conferir', 'erro');
+      throw new Error(sem ? 'Sem conexão. Mostrando a lista de ' + DADOS.gerado + '.' : e.message);
+    }
+  });
+  btnA.classList.remove('girando');
+}
+
+/* ---------- Novidades (como no Meta Master): o que entrou ou mudou desde a última limpeza ---------- */
+const NV_KEY = 'mb-novidades', VISTO_KEY = 'mb-visto';
+let nvAberto = false;
+const lerLS = (k, def) => { try { return JSON.parse(localStorage.getItem(k) || 'null') || def; } catch (e) { return def; } };
+const gravarLS = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+function foto() { const o = {}; DADOS.vendas.forEach(v => { o[v.id] = { n: v.n, p: v.p, k: v.k, b: v.b, nv: (v.vagas || []).length, vg: (v.vagas || []).map(x => x.n) }; }); return o; }
+function registrarNovidades() {
+  const atual = foto(), visto = lerLS(VISTO_KEY, null);
+  gravarLS(VISTO_KEY, atual);
+  if (!visto) { renderNovidades(); return; }            // primeira vez neste aparelho: só guarda a referência
+  const itens = [];
+  Object.keys(atual).forEach(id => {
+    const a = atual[id], o = visto[id];
+    if (!o) { itens.push({ t: 'nova', cli: a.n, p: a.p, txt: 'entrou · ' + ST_CURTO[a.k], val: a.b }); return; }
+    if (o.k !== a.k) itens.push({ t: 'alt', cli: a.n, p: a.p, txt: ST_CURTO[o.k] + ' → ' + ST_CURTO[a.k] + (Math.abs(o.b - a.b) > .005 ? ' · valor de R$ ' + brl(o.b) + ' para R$ ' + brl(a.b) : ''), val: a.k === 'won' ? a.b : 0 });
+    else if (Math.abs(o.b - a.b) > .005) itens.push({ t: 'alt', cli: a.n, p: a.p, txt: 'valor de R$ ' + brl(o.b) + ' para R$ ' + brl(a.b), val: a.b - o.b });
+    (a.vg || []).filter(n => !(o.vg || []).includes(n)).forEach(n => itens.push({ t: 'nova', cli: n, p: a.p, txt: 'vaga nova · compra de ' + a.n.split(' ')[0], val: 0 }));
+  });
+  Object.keys(visto).forEach(id => { if (!atual[id]) itens.push({ t: 'rem', cli: visto[id].n, p: visto[id].p, txt: 'saiu da lista', val: -visto[id].b }); });
+  if (itens.length) { const l = lerLS(NV_KEY, []); l.push({ h: DADOS.gerado, itens }); gravarLS(NV_KEY, l); }
+  renderNovidades();
+}
+function nvItens() { const out = []; lerLS(NV_KEY, []).forEach(l => (l.itens || []).forEach(i => out.push({ ...i, h: l.h }))); return out.reverse(); }
+function renderNovidades() {
+  const el = document.getElementById('novidades'), lotes = lerLS(NV_KEY, []), it = nvItens();
+  if (!lotes.length) { el.innerHTML = ''; return; }
+  const ult = lotes[lotes.length - 1];
+  if (!it.length) { el.innerHTML = `<div class="nv nada"><div class="nv-top"><span class="nv-tx">✓ Lista de ${esc(ult.h)} · nada novo desde a última limpeza</span><span class="nv-ac"><button type="button" class="nv-bt" data-nv="limpar">🧹 Limpar</button></span></div></div>`; return; }
+  const tot = it.reduce((s, i) => s + i.val, 0);
+  const nN = it.filter(i => i.t === 'nova').length, nA = it.filter(i => i.t === 'alt').length, nR = it.filter(i => i.t === 'rem').length;
+  const det = [nN && nN + (nN === 1 ? ' entrou' : ' entraram'), nA && nA + (nA === 1 ? ' mudou' : ' mudaram'), nR && nR + (nR === 1 ? ' saiu' : ' saíram')].filter(Boolean).join(' · ');
+  const sinal = v => (v < 0 ? '− R$ ' : 'R$ ') + brl(Math.abs(v));
+  let h = `<div class="nv"><div class="nv-top"><span class="nv-dot" aria-hidden="true"></span><span class="nv-tx"><b>${sinal(tot)}</b> desde a última limpeza<small>${det} · ${lotes.length}${lotes.length === 1 ? ' atualização' : ' atualizações'} · última em ${esc(ult.h)}</small></span>`
+    + `<span class="nv-ac"><button type="button" class="nv-bt" data-nv="ver" aria-expanded="${nvAberto}">${nvAberto ? 'ocultar detalhes' : 'ver detalhes'} ›</button><button type="button" class="nv-bt lim" data-nv="limpar">🧹 Limpar</button></span></div>`
+    + `<div class="nv-tk"><span class="nv-tklb">🆕 ENTROU</span><span class="nv-tkvp"><span class="nv-tkmv" style="animation-duration:${Math.max(18, it.length * 7)}s">`
+    + it.map(i => `<span>${esc(i.cli)} <i>· ${esc(i.p)} · ${esc(i.txt)} ·</i> <b${i.val < 0 ? ' class="neg"' : ''}>${sinal(i.val)}</b></span>`).join('') + '</span></span></div>';
+  if (nvAberto) h += `<div class="nv-tb"><table><thead><tr><th>Cliente</th><th>Pitch</th><th>O que mudou</th><th class="r">Valor</th><th>Quando</th></tr></thead><tbody>`
+    + it.map(i => `<tr><td class="nome">${esc(i.cli)}</td><td>${esc(i.p)}</td><td><span class="nv-pill ${i.t}">${i.t === 'nova' ? 'Entrou' : i.t === 'rem' ? 'Saiu' : 'Mudou'}</span> ${esc(i.txt)}</td><td class="r${i.val < 0 ? ' neg' : ''}">${sinal(i.val)}</td><td>${esc(i.h)}</td></tr>`).join('') + '</tbody></table></div>';
+  el.innerHTML = h + '</div>';
+}
+document.getElementById('novidades').addEventListener('click', e => {
+  const b = e.target.closest('[data-nv]'); if (!b) return;
+  if (b.dataset.nv === 'ver') { nvAberto = !nvAberto; renderNovidades(); }
+  else { gravarLS(NV_KEY, []); nvAberto = false; renderNovidades(); toast('🧹 Novidades limpas'); }
+});
+
+/* ---------- Aba Formas de pagamento ---------- */
+const ORD_FORMA = [['Cartão de crédito', 'Rede'], ['Cartão de crédito', 'CISPay'], ['Cartão de crédito', 'FRZ Pay'], ['Cartão de crédito', 'Cielo'], ['SUB', 'Cartão de crédito', 'Subtotal cartão'],
+  ['PIX', 'Rede / PIX direto'], ['PIX', 'CISPay'], ['SUB', 'PIX', 'Subtotal PIX'], ['Cheque', '(sem gateway)'], ['TED', '(sem gateway)'], ['Dinheiro', '(sem gateway)'], ['Bônus', '(sem gateway)']];
+/* Parte da Mentoria em cada pagamento: nas vendas com outro curso (IF), o pagamento é rateado pela
+   proporção Mentoria ÷ valor da venda; o último pagamento fecha o centavo para somar o bruto da Mentoria. */
+function pagamentosMentoria(v) {
+  const pgs = v.pg || [], tot = pgs.reduce((s, p) => s + p.v, 0);
+  const fr = v.venda > 0 ? Math.min(1, v.b / v.venda) : 1;
+  const alvo = Math.round(tot * fr * 100) / 100;
+  let acum = 0;
+  return pgs.map((p, j) => {
+    const vm = j === pgs.length - 1 ? Math.round((alvo - acum) * 100) / 100 : Math.round(p.v * fr * 100) / 100;
+    acum += vm;
+    return { ...p, vm, vo: Math.round((p.v - vm) * 100) / 100 };
+  });
+}
+function resumoPg(lista) {
+  const m = new Map(); let estorno = 0, nEst = 0;
+  lista.forEach(v => pagamentosMentoria(v).forEach(p => {
+    if (v.k === 'est') { estorno += p.v; nEst++; return; }
+    const k = p.f + '|' + p.g, a = m.get(k) || { f: p.f, g: p.g, n: 0, v: 0, o: 0 }; a.n++; a.v += p.vm; a.o += p.vo; m.set(k, a);
+  }));
+  const vals = [...m.values()];
+  const tot = vals.reduce((s, a) => s + a.v, 0), totO = vals.reduce((s, a) => s + a.o, 0), nTot = vals.reduce((s, a) => s + a.n, 0);
+  const linhas = [], usados = new Set();
+  ORD_FORMA.forEach(r => {
+    if (r[0] === 'SUB') {
+      const g = vals.filter(a => a.f === r[1]); if (!g.length) return;
+      linhas.push({ sub: true, f: r[2], g: '', n: g.reduce((s, a) => s + a.n, 0), v: g.reduce((s, a) => s + a.v, 0), o: g.reduce((s, a) => s + a.o, 0) }); return;
+    }
+    const a = m.get(r[0] + '|' + r[1]); if (a) { linhas.push(a); usados.add(r[0] + '|' + r[1]); }
+  });
+  m.forEach((a, k) => { if (!usados.has(k)) linhas.push(a); });
+  return { linhas, tot, totO, nTot, estorno, nEst };
+}
+// Parcelas: selo "12x" + valor da parcela, centralizado. Se a divisão não fecha no centavo, mostra a parcela
+// cheia com * e a última (que ajusta os centavos) no balão; à vista vira só o selo.
+function parcelas(x, v) {
+  if (x <= 1) return { avista: true, txt: 'à vista' };
+  const c = Math.round(v * 100), p = Math.round(c / x), ult = c - p * (x - 1);
+  return { x, p: p / 100, ult: ult / 100, exata: ult === p };
+}
+function parcelaHtml(x, v) {
+  const q = parcelas(x, v);
+  if (q.avista) return '<span class="px av">à vista</span>';
+  const dica = q.exata ? `${q.x} parcelas de R$ ${brl(q.p)}` : `${q.x - 1} parcelas de R$ ${brl(q.p)} + 1 de R$ ${brl(q.ult)}`;
+  return `<span class="px" title="${dica}"><b>${q.x}x</b><span>${brl(q.p)}${q.exata ? '' : '<i>*</i>'}</span></span>`;
+}
+function parcelaTxt(x, v) { const q = parcelas(x, v); return q.avista ? 'à vista' : q.x + 'x R$ ' + brl(q.p) + (q.exata ? '' : '*'); }
+function notasPg(lista, r) {
+  const notas = ['Valor recebido = só a parte da Mentoria.'];
+  if (r.totO > .004) notas.push(`¹ Nas vendas com o IF, o pagamento foi rateado: R$ ${brl(r.totO)} são do IF e aparecem na coluna Diferença (IF).`);
+  if (lista.some(v => (v.pg || []).some(p => p.x > 1 && Math.round(p.v * 100) % p.x))) notas.push('* A última parcela ajusta os centavos (passe o mouse ou toque para ver).');
+  if (r.nEst) notas.push(`Os estornos (${r.nEst} ${r.nEst === 1 ? 'pagamento' : 'pagamentos'}, R$ ${brl(r.estorno)} devolvidos) ficam fora do total.`);
+  return notas.join(' ');
+}
+function renderPg(lista, ts) {
+  const r = resumoPg(lista), pct = v => r.tot ? (v / r.tot * 100).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%' : '—';
+  const dif = o => o > .004 ? 'R$ ' + brl(o) : '—';
+  document.getElementById('pgResumo').innerHTML = r.linhas.map(a => `<tr${a.sub ? ' class="sub"' : ''}><td class="c-f">${esc(a.f)}</td><td class="c-g">${esc(a.g)}</td><td class="r c-n">${a.n}</td><td class="r c-v">R$ ${brl(a.v)}</td><td class="r dif c-o">${a.o > .004 ? dif(a.o) : '<span class="so-pc">—</span>'}</td><td class="r c-pct">${pct(a.v)}</td></tr>`).join('')
+    + `<tr class="tot"><td class="c-f">Total</td><td class="c-g"></td><td class="r c-n">${r.nTot}</td><td class="r c-v">R$ ${brl(r.tot)}</td><td class="r c-o">${r.totO > .004 ? dif(r.totO) : '<span class="so-pc">—</span>'}</td><td class="r c-pct">${r.tot ? '100,0%' : '—'}</td></tr>`;
+  document.getElementById('pgNota').textContent = notasPg(lista, r);
+  const linhas = [];
+  lista.forEach((v, iv) => {
+    const z = iv % 2 ? ' zb' : ' za';   // faixa clara/escura por cliente
+    const pgs = pagamentosMentoria(v);
+    const nome = `<a href="${esc(v.link)}" target="_blank" rel="noopener" title="Abrir a venda no Sales Cube">${realce(v.n, ts)}</a>${v.if_ ? '<sup title="Também inclui o IF">¹</sup>' : ''}`;
+    const pill = `<span class="pill ${v.k}">${ST_CURTO[v.k]}</span>`;
+    if (!pgs.length) { linhas.push(`<tr class="pg-ini${z}"><td class="c-p"><span class="pitch">${esc(v.p)}</span></td><td class="nome c-nm">${nome}</td><td class="c-s">${pill}</td><td colspan="4" class="det c-f">sem pagamento lançado</td><td class="r det c-v">—</td></tr>`); return; }
+    const est = v.k === 'est' ? ' pg-est' : '';
+    const multi = pgs.length > 1;
+    if (multi) linhas.push(`<tr class="pg-ini pg-tot${z}${est}"><td class="c-p"><span class="pitch">${esc(v.p)}</span></td><td class="nome c-nm">${nome}</td><td class="c-s">${pill}</td><td colspan="4" class="det c-f">${pgs.length} pagamentos</td><td class="r c-v"><b>${brl(pgs.reduce((s, p) => s + p.vm, 0))}</b></td></tr>`);
+    pgs.forEach((p, j) => linhas.push(`<tr class="${multi || j ? 'pg-cont' : 'pg-ini'}${multi ? ' pg-sub' : ''}${z}${est}"><td class="c-p">${multi || j ? '' : `<span class="pitch">${esc(v.p)}</span>`}</td><td class="nome c-nm">${multi || j ? '' : nome}</td><td class="c-s">${multi || j ? '' : pill}</td><td class="c-f">${esc(p.f)}</td><td class="det c-g">${esc(p.g)}</td><td class="c parc c-x">${parcelaHtml(p.x, p.vm)}</td><td class="det c-d">${esc(p.d)}</td><td class="r c-v"${p.vo > .004 ? ` title="Pagamento total R$ ${brl(p.v)} · IF R$ ${brl(p.vo)}"` : ''}>${brl(p.vm)}</td></tr>`));
+  });
+  document.getElementById('pgCorpo').innerHTML = linhas.join('');
+  const nCli = lista.filter(v => (v.pg || []).length).length;
+  document.getElementById('pgConta').textContent = `${nCli} de ${lista.length} clientes com pagamento · ${r.nTot + r.nEst} pagamentos`;
+  document.getElementById('pgTotal').textContent = brl(r.tot);
+}
+async function gerarPdfPg(lista, filtro) {
+  await libsPdf();
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  const W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight(), M = 12, r = resumoPg(lista);
+  doc.setFillColor(15, 34, 54); doc.rect(0, 0, W, 30, 'F');
+  doc.setTextColor(227, 178, 90); doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.text(('Febracis Vitória · ' + PITCHES).toUpperCase(), M, 10);
+  doc.setTextColor(255, 255, 255); doc.setFontSize(17); doc.text('Mentoria Business — Formas de pagamento', M, 19);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(185, 200, 214); doc.text(pdfTxt('Lista: ' + (filtro || 'todas as vendas') + ' · só a parte da Mentoria'), M, 25.5);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(227, 178, 90); doc.text('Recebido (Mentoria) R$ ' + brl(r.tot), W - M, 19, { align: 'right' });
+  const base = { theme: 'plain', margin: { left: M, right: M, bottom: 14 }, styles: { font: 'helvetica', fontSize: 8.6, cellPadding: 2, textColor: [19, 41, 61], overflow: 'ellipsize', lineColor: [217, 225, 232], lineWidth: { bottom: .2 } }, headStyles: { fontStyle: 'bold', fontSize: 7.4, textColor: [77, 98, 118], lineColor: [19, 41, 61], lineWidth: { bottom: .5 } } };
+  const pct = v => r.tot ? (v / r.tot * 100).toFixed(1).replace('.', ',') + '%' : '—', dif = o => o > .004 ? 'R$ ' + brl(o) : '—';
+  doc.autoTable({ ...base, startY: 36, tableWidth: 200,
+    head: [['Forma', 'Gateway', 'Pagamentos', 'Valor recebido', 'Diferença (IF)', '% do recebido']],
+    body: r.linhas.map(a => [a.f, a.g, a.n, 'R$ ' + brl(a.v), dif(a.o), pct(a.v)]).concat([['Total', '', r.nTot, 'R$ ' + brl(r.tot), dif(r.totO), r.tot ? '100,0%' : '—']]),
+    columnStyles: { 2: { halign: 'right' }, 3: { halign: 'right' }, 4: { halign: 'right' }, 5: { halign: 'right' } },
+    didParseCell: d => { if (d.section !== 'body') { if (d.column.index >= 2) d.cell.styles.halign = 'right'; return; } const a = r.linhas[d.row.index]; if (!a) { d.cell.styles.fillColor = [19, 41, 61]; d.cell.styles.textColor = [255, 255, 255]; d.cell.styles.fontStyle = 'bold'; } else if (a.sub) { d.cell.styles.fillColor = [231, 236, 241]; d.cell.styles.fontStyle = 'bold'; } }
+  });
+  const body = [];
+  const faixa = [];
+  lista.forEach((v, iv) => {
+    const pgs = pagamentosMentoria(v), multi = pgs.length > 1, nm = v.n + (v.if_ ? ' ¹' : '');
+    const add = (lin, tot) => { body.push(lin); faixa.push({ z: iv % 2, tot }); };
+    if (!pgs.length) { add([v.p, nm, ST_CURTO[v.k].toUpperCase(), 'sem pagamento lançado', '', '', '', '—']); return; }
+    if (multi) add([v.p, nm, ST_CURTO[v.k].toUpperCase(), pgs.length + ' pagamentos', '', '', '', brl(pgs.reduce((s, p) => s + p.vm, 0))], true);
+    pgs.forEach((p, j) => add([multi || j ? '' : v.p, multi || j ? '' : nm, multi || j ? '' : ST_CURTO[v.k].toUpperCase(), (multi ? '> ' : '') + p.f, p.g, parcelaTxt(p.x, p.vm), p.d, brl(p.vm)]));
+  });
+  doc.autoTable({ ...base, startY: doc.lastAutoTable.finalY + 8,
+    head: [['Pitch', 'Cliente', 'Situação', 'Forma', 'Gateway', 'Parcelas', 'Data', 'Valor']], body,
+    columnStyles: { 0: { cellWidth: 20 }, 1: { cellWidth: 68, fontStyle: 'bold' }, 2: { cellWidth: 24, fontStyle: 'bold' }, 3: { cellWidth: 32 }, 4: { cellWidth: 32 }, 5: { cellWidth: 36, halign: 'center' }, 6: { cellWidth: 22 }, 7: { cellWidth: 24, halign: 'right' } },
+    didParseCell: d => {
+      if (d.section !== 'body') { d.cell.styles.halign = d.column.index === 5 ? 'center' : d.column.index === 7 ? 'right' : 'left'; return; }
+      const f = faixa[d.row.index]; if (f.z) d.cell.styles.fillColor = [236, 240, 245];
+      if (f.tot && d.column.index === 7) d.cell.styles.fontStyle = 'bold';
+      if (f.tot && d.column.index === 3) d.cell.styles.textColor = [77, 98, 118];
+    }
+  });
+  const pags = doc.getNumberOfPages();
+  for (let p = 1; p <= pags; p++) { doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(138, 153, 168); doc.text(pdfTxt(notasPg(lista, r) + ' Dados do Sales Cube de ' + DADOS.gerado), M, H - 7, { maxWidth: W - 2 * M - 30 }); doc.text('Página ' + p + ' de ' + pags, W - M, H - 7, { align: 'right' }); }
+  return doc.output('blob');
+}
+let aba = 'vendas';   // sempre abre em Vendas
+function trocarAba(a) {
+  aba = a;
+  document.getElementById('abaVendas').setAttribute('aria-selected', a === 'vendas');
+  document.getElementById('abaPg').setAttribute('aria-selected', a === 'pg');
+  document.getElementById('viewVendas').hidden = a !== 'vendas';
+  document.getElementById('viewPg').hidden = a !== 'pg';
+  // o botão se chama sempre "Baixar PDF desta lista" (pedido do Pablo); na aba de pagamentos ele baixa o PDF dos pagamentos
+}
+document.getElementById('abaVendas').addEventListener('click', () => trocarAba('vendas'));
+document.getElementById('abaPg').addEventListener('click', () => trocarAba('pg'));
+trocarAba(aba);
+registrarNovidades();
+
+if (MODO === 'arquivo') {
+  document.getElementById('acoes').hidden = false;
+  btnA.hidden = false;
+  btnA.parentElement.prepend(btnA);
+  btnV.classList.replace('btn-ouro', 'btn-vidro');
+  btnA.title = 'Busca a última lista publicada';
+  btnA.addEventListener('click', atualizar);
+  // ao abrir, confere em silêncio se já há lista mais nova publicada
+  buscarFoto().then(novo => { if ((novo.rodada || 0) > (DADOS.rodada || 0)) aplicar(novo, false); }).catch(() => {});
+} else {
+  (async () => {
+    dl = window.claude ? await claude.use('downloads') : null;
+    if (!dl) return;
+    document.getElementById('acoes').hidden = false;
+    btnArq.hidden = false;
+    btnArq.addEventListener('click', () => acao(btnArq, 'Preparando…', async () => {
+      const r = await fetch('mentoria-business.html'); if (!r.ok) throw new Error('O arquivo não está disponível agora.');
+      await dl.save({ filename: 'Mentoria-Business.html', data: await r.blob() }); toast('Arquivo pronto. Repasse para a equipe.');
+    }));
+  })();
+}
+
+// no celular não existe "passar o mouse": tocar na parcela (ou no valor rateado) mostra o detalhe
+document.getElementById('pgCorpo').addEventListener('click', e => {
+  const t = e.target.closest('[title]'); if (t && !t.closest('a')) toast(t.getAttribute('title'));
+});
+if (q.value) estado.q = q.value;
+render(true);
+</script>
+
+</body></html>
