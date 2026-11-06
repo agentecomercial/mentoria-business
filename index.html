@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8">
-<meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body style="margin:0">
+<html lang="pt-BR"><head>
+<meta name="robots" content="noindex,nofollow"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body style="margin:0">
 <title>Busca Mentoria Business</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
@@ -65,7 +65,7 @@ h1 .selo-sync.busy .ponto { animation: pisca 1s ease-in-out infinite }
 @keyframes gira { to { transform: rotate(360deg) } }
 .selo { display: inline-block; margin-left: 8px; font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; vertical-align: 2px }
 .selo.novo { background: var(--gold); color: #1a1205 } .selo.mudou { background: var(--neg-bg); color: var(--neg) }
-.kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px }
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
 .kpi { background: linear-gradient(160deg, rgba(255,255,255,.12), rgba(255,255,255,.03)); border: 1px solid rgba(255,255,255,.14); border-radius: 14px; padding: 14px 16px; box-shadow: 0 18px 40px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.12); transition: transform .25s, box-shadow .25s }
 .kpi:hover { transform: translateY(-2px); box-shadow: 0 24px 48px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.14) }
 .kpi span { display: block; font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--stage-mut) }
@@ -209,6 +209,8 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
 .nv-pill { display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; margin-right: 6px; background: var(--won-bg); color: var(--won) }
 .nv-pill.alt { background: var(--neg-bg); color: var(--neg) } .nv-pill.rem { background: var(--est-bg); color: var(--est) }
 
+
+
 /* Formas de pagamento */
 .pgview { display: grid; gap: 22px }
 .pgh { font: 800 18px/1.2 var(--display); margin: 0 0 10px; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap }
@@ -266,6 +268,7 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
   .busca kbd { display: none }
   .pdd { width: 100% } .dd { flex: 1; justify-content: center } .pop { left: 0; right: auto; width: 100% }
   .abas button { flex: 1; padding-inline: 8px }
+  
   .lista { overflow: visible }
   .rodape { font-size: 12px }
 
@@ -275,7 +278,7 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
   #viewVendas thead { display: none }
   #viewVendas tbody { display: grid; gap: 10px }
   #viewVendas tbody tr { background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; box-shadow: var(--shadow); padding: 12px 14px; display: grid;
-    grid-template-columns: 1fr auto; grid-template-areas: "pitch status" "nome nome" "det det" "fone fone" "bruto liq"; gap: 6px 12px; align-items: center }
+    grid-template-columns: 1fr auto; grid-template-areas: "pitch status" "nome nome" "det det" "fone fone" "bruto bruto"; gap: 6px 12px; align-items: center }
   #viewVendas tbody tr:hover { background: var(--surface) }
   #viewVendas tbody tr.vaga { margin-top: -6px; margin-left: 18px; background: var(--surface-2); box-shadow: none }
   #viewVendas tr.vaga td { background: none; padding: 0 }
@@ -345,7 +348,7 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
   <div class="inner">
     <div class="topo">
       <div>
-        <div class="eyebrow">Febracis Vitória · Pitch FGPC 24 e Pitch MCIS252 e Pitch CEOP17</div>
+        <div class="eyebrow">Febracis Vitória · Pitch FGPC 24 e Pitch MCIS252 e Pitch CEOP17 e Mentor ALBERTO FREITAS e Mentor MATEUS COSTA e Pitch IF22</div>
         <h1>Mentoria Business — Combo 3 Mentorias <span class="selo-sync" id="sync" aria-live="polite"></span></h1>
         <p class="lead">Todas as vendas da Mentoria nos pitches.</p>
       </div>
@@ -357,8 +360,7 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
     </div>
     <div class="kpis" aria-live="polite">
       <div class="kpi"><span>Vendas na lista</span><b id="kVendas">0</b><small id="kVendasS">de 33</small></div>
-      <div class="kpi"><span>Valor bruto</span><b id="kBruto">R$ 0,00</b><small>valor cheio da Mentoria</small></div>
-      <div class="kpi ouro"><span>Valor líquido</span><b id="kLiq">R$ 0,00</b><small>50% do bruto, conta para a meta</small></div>
+      <div class="kpi ouro"><span>Valor</span><b id="kBruto">R$ 0,00</b><small>valor cheio da Mentoria, conta para a meta</small></div>
     </div>
   </div>
 </header>
@@ -393,8 +395,10 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
     <p class="so-print" id="filtroPrint"></p>
     <div class="abas" role="tablist" aria-label="O que mostrar">
       <button type="button" role="tab" id="abaVendas" aria-selected="true" aria-controls="viewVendas">Vendas</button>
+      
       <button type="button" role="tab" id="abaPg" aria-selected="false" aria-controls="viewPg">Formas de pagamento</button>
     </div>
+    
     <section id="viewPg" class="pgview" role="tabpanel" aria-labelledby="abaPg" hidden>
       <div class="pgbloco">
         <h2 class="pgh">Formas de pagamento <small>só o que entrou para a Mentoria</small></h2>
@@ -422,11 +426,10 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
           <th data-col="k" aria-sort="none"><button type="button">Situação</button></th>
           <th>Detalhe</th>
           <th data-col="c" aria-sort="none"><button type="button">Telefone</button></th>
-          <th data-col="b" class="r" aria-sort="none"><button type="button">Bruto</button></th>
-          <th class="r">Líquido</th>
+          <th data-col="b" class="r" aria-sort="none"><button type="button">Valor</button></th>
         </tr></thead>
         <tbody id="corpo"></tbody>
-        <tfoot><tr><td></td><td id="tLabel">Total</td><td></td><td></td><td></td><td class="r" id="tBruto"></td><td class="r" id="tLiq"></td></tr></tfoot>
+        <tfoot><tr><td></td><td id="tLabel">Total</td><td></td><td></td><td></td><td class="r" id="tBruto"></td></tr></tfoot>
       </table>
       <div class="vazio" id="vazio" hidden><b>Nenhuma venda encontrada</b>Confira a grafia ou toque em “Mostrar todas as vendas”.</div>
     </div>
@@ -585,22 +588,20 @@ function render(animar) {
     <td class="c-status"><span class="pill ${v.k}">${ST_CURTO[v.k]}</span></td>
     <td class="c-det det${v.venc ? ' venc' : ''}">${v.det ? (v.venc ? '⚠ ' : '') + realce(v.det, ts) : ''}</td>
     <td class="c-fone"><span class="fone"><span>${realce(v.c, ts)}</span>${v.c && v.c !== '—' ? `<button type="button" class="copiar" data-fone="${esc(v.c)}" aria-label="Copiar o telefone de ${esc(v.n)}">Copiar</button>` : ''}</span></td>
-    <td class="c-bruto r" data-label="Bruto">${brl(v.b)}</td><td class="c-liq r liq" data-label="Líquido">${brl(v.b / 2)}</td></tr>` + v.vagas.map((x, j) => `<tr class="vaga${animar && !reduz && n < 18 ? ' entra' : ''}"${animar && !reduz && n < 18 ? ` style="animation-delay:${n * 18 + 9}ms"` : ''}>
+    <td class="c-bruto r" data-label="Valor">${brl(v.b)}</td></tr>` + v.vagas.map((x, j) => `<tr class="vaga${animar && !reduz && n < 18 ? ' entra' : ''}"${animar && !reduz && n < 18 ? ` style="animation-delay:${n * 18 + 9}ms"` : ''}>
     <td class="c-pitch"><span class="pitch">${esc(v.p)}</span></td>
     <td class="c-nome nome"><span class="seta" aria-hidden="true">↳</span>${x.link ? `<a href="${esc(x.link)}" target="_blank" rel="noopener" title="Abrir no Sales Cube a venda onde está esta vaga">${realce(x.n, ts)}</a>` : realce(x.n, ts)}</td>
     <td class="c-status"><span class="pill ${v.k}">${ST_CURTO[v.k]}</span></td>
     <td class="c-det det">${j + 2}ª vaga · compra de ${esc(v.n.split(' ')[0])}</td>
     <td class="c-fone">${x.c ? `<span class="fone"><span>${realce(x.c, ts)}</span><button type="button" class="copiar" data-fone="${esc(x.c)}" aria-label="Copiar o telefone de ${esc(x.n)}">Copiar</button></span>` : '<span class="det">sem telefone no ZS</span>'}</td>
-    <td class="c-bruto r" data-label="Bruto">${brl(x.b)}</td><td class="c-liq r liq" data-label="Líquido">${brl(x.b / 2)}</td></tr>`).join('')).join('');
+    <td class="c-bruto r" data-label="Valor">${brl(x.b)}</td></tr>`).join('')).join('');
   const tb = lista.reduce((s, v) => s + v.b, 0);
   conta(document.getElementById('kVendas'), lista.length, x => Math.round(x));
   conta(document.getElementById('kBruto'), tb, x => 'R$ ' + brl(x));
-  conta(document.getElementById('kLiq'), tb / 2, x => 'R$ ' + brl(x));
   const nvag = lista.reduce((s, v) => s + 1 + v.vagas.length, 0);
   document.getElementById('kVendasS').textContent = 'de ' + V.length + ' vendas · ' + nvag + (nvag === 1 ? ' vaga' : ' vagas') + ' na lista';
   document.getElementById('tLabel').textContent = 'Total · ' + lista.length + (lista.length === 1 ? ' venda' : ' vendas') + ' · ' + nvag + (nvag === 1 ? ' vaga' : ' vagas');
   document.getElementById('tBruto').textContent = brl(tb);
-  document.getElementById('tLiq').textContent = brl(tb / 2);
   document.getElementById('vazio').hidden = lista.length > 0;
   document.querySelector('tfoot').hidden = lista.length === 0;
   const filtro = descricaoFiltro();
@@ -609,7 +610,8 @@ function render(animar) {
   document.getElementById('limpar').hidden = !estado.q;
   document.getElementById('atalho').hidden = !!estado.q;
   renderPg(lista, ts);
-  document.getElementById('filtroPrint').textContent ='Lista: ' + (filtro || 'todas as vendas') + ' · ' + lista.length + ' vendas · bruto R$ ' + brl(tb) + ' · líquido R$ ' + brl(tb / 2);
+  
+  document.getElementById('filtroPrint').textContent ='Lista: ' + (filtro || 'todas as vendas') + ' · ' + lista.length + ' vendas · valor R$ ' + brl(tb);
 }
 
 /* Interações */
@@ -630,11 +632,12 @@ const toastEl = document.getElementById('toast'); let tt;
 function toast(msg) { toastEl.textContent = msg; toastEl.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => toastEl.classList.remove('on'), 2200); }
 const copiarFone = async e => {
   const b = e.target.closest('.copiar'); if (!b) return;
-  try { await navigator.clipboard.writeText(b.dataset.fone); b.textContent = 'Copiado'; b.classList.add('ok'); toast('Telefone copiado: ' + b.dataset.fone); }
+  try { await navigator.clipboard.writeText(b.dataset.fone); b.textContent = 'Copiado'; b.classList.add('ok'); toast((b.dataset.tipo || 'Telefone') + ' copiado: ' + b.dataset.fone); }
   catch (err) { const s = getSelection(), r = document.createRange(); r.selectNodeContents(b.previousElementSibling); s.removeAllRanges(); s.addRange(r); toast('Telefone selecionado. Use Ctrl+C para copiar.'); }
   setTimeout(() => { b.textContent = 'Copiar'; b.classList.remove('ok'); }, 1600);
 };
 document.getElementById('corpo').addEventListener('click', copiarFone);
+
 
 /* PDF */
 function carregar(src) { return new Promise((ok, erro) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = erro; document.head.appendChild(s); }); }
@@ -644,7 +647,7 @@ function libsPdf() {
   return libs;
 }
 const pdfTxt = s => String(s).replace(/⚠\s*/g, '! ').replace(/[“”]/g, '"');
-const PITCHES = 'Pitch FGPC 24 e Pitch MCIS252 e Pitch CEOP17';
+const PITCHES = 'Pitch FGPC 24 e Pitch MCIS252 e Pitch CEOP17 e Mentor ALBERTO FREITAS e Mentor MATEUS COSTA e Pitch IF22';
 async function gerarPdf(lista, filtro, comContatos) {
   await libsPdf();
   const { jsPDF } = window.jspdf;
@@ -657,11 +660,10 @@ async function gerarPdf(lista, filtro, comContatos) {
   doc.setTextColor(227, 178, 90); doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.text(('Febracis Vitória · ' + PITCHES).toUpperCase(), M, 10);
   doc.setTextColor(255, 255, 255); doc.setFontSize(17); doc.text('Mentoria Business — Combo 3 Mentorias', M, 19);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(185, 200, 214);
-  doc.text(pdfTxt('Lista: ' + (filtro || 'todas as vendas') + ' · líquido = 50% do bruto'), M, 25.5);
+  doc.text(pdfTxt('Lista: ' + (filtro || 'todas as vendas')), M, 25.5);
   doc.setFont('helvetica', 'bold'); doc.setTextColor(255, 255, 255); doc.setFontSize(12);
-  doc.text(lista.length + ' vendas · ' + nvag + ' vagas', W - M - 120, 19, { align: 'right' });
-  doc.text('Bruto R$ ' + brl(tb), W - M - 92, 19);
-  doc.setTextColor(227, 178, 90); doc.text('Líquido R$ ' + brl(tb / 2), W - M, 19, { align: 'right' });
+  doc.text(lista.length + ' vendas · ' + nvag + ' vagas', W - M - 60, 19, { align: 'right' });
+  doc.setTextColor(227, 178, 90); doc.text('Valor R$ ' + brl(tb), W - M, 19, { align: 'right' });
   const cor = { won: [31, 122, 77], ent: [138, 93, 12], neg: [42, 99, 184], est: [179, 38, 30] };
   const base = {
     theme: 'plain', margin: { left: M, right: M, bottom: 14 },
@@ -670,17 +672,16 @@ async function gerarPdf(lista, filtro, comContatos) {
     footStyles: { fontStyle: 'bold', fontSize: 9.5, lineColor: [19, 41, 61], lineWidth: { top: .5 } }
   };
   doc.autoTable({ ...base, startY: 36,
-    head: [['#', 'Pitch', 'Cliente', 'Situação', 'Detalhe', 'Telefone', 'Bruto', 'Líquido']],
-    body: linhas.map(({ v, n, x, j }) => x ? ['', v.p, '   > ' + x.n, ST_CURTO[v.k].toUpperCase(), (j + 2) + 'ª vaga · compra de ' + v.n.split(' ')[0], x.c || '—', brl(x.b), brl(x.b / 2)] : [n, v.p, v.n + (v.if_ ? ' ¹' : ''), ST_CURTO[v.k].toUpperCase(), pdfTxt((v.venc ? '! ' : '') + v.det), v.c, brl(v.b), brl(v.b / 2)]),
-    foot: [['', '', 'Total · ' + lista.length + ' vendas · ' + nvag + ' vagas', '', '', '', brl(tb), brl(tb / 2)]],
-    columnStyles: { 0: { cellWidth: 8, textColor: [176, 125, 34], fontStyle: 'bold' }, 1: { cellWidth: 20 }, 2: { cellWidth: 72, fontStyle: 'bold' }, 3: { cellWidth: 26, fontStyle: 'bold' }, 4: { cellWidth: 62 }, 5: { cellWidth: 30 }, 6: { cellWidth: 26, halign: 'right' }, 7: { cellWidth: 26, halign: 'right' } },
+    head: [['#', 'Pitch', 'Cliente', 'Situação', 'Detalhe', 'Telefone', 'Valor']],
+    body: linhas.map(({ v, n, x, j }) => x ? ['', v.p, '   > ' + x.n, ST_CURTO[v.k].toUpperCase(), (j + 2) + 'ª vaga · compra de ' + v.n.split(' ')[0], x.c || '—', brl(x.b)] : [n, v.p, v.n + (v.if_ ? ' ¹' : ''), ST_CURTO[v.k].toUpperCase(), pdfTxt((v.venc ? '! ' : '') + v.det), v.c, brl(v.b)]),
+    foot: [['', '', 'Total · ' + lista.length + ' vendas · ' + nvag + ' vagas', '', '', '', brl(tb)]],
+    columnStyles: { 0: { cellWidth: 8, textColor: [176, 125, 34], fontStyle: 'bold' }, 1: { cellWidth: 24 }, 2: { cellWidth: 78, fontStyle: 'bold' }, 3: { cellWidth: 26, fontStyle: 'bold' }, 4: { cellWidth: 70 }, 5: { cellWidth: 32 }, 6: { cellWidth: 32, halign: 'right' } },
     didParseCell: d => {
       if (d.section !== 'body') { if (d.column.index >= 6) d.cell.styles.halign = 'right'; return; }
       const { v, x } = linhas[d.row.index];
       if (x) { d.cell.styles.fillColor = [243, 245, 248]; if (d.column.index === 2) d.cell.styles.fontStyle = 'normal'; }
       if (d.column.index === 3) d.cell.styles.textColor = cor[v.k];
       if (d.column.index === 4 && v.venc && !x) { d.cell.styles.textColor = cor.est; d.cell.styles.fontStyle = 'bold'; }
-      if (d.column.index === 7) d.cell.styles.textColor = [77, 98, 118];
     },
     didDrawCell: d => { if (d.section === 'body' && d.column.index === 2) { const l = linhas[d.row.index]; doc.link(d.cell.x, d.cell.y, d.cell.width, d.cell.height, { url: l.x ? l.x.link : l.v.link }); } }
   });
@@ -974,6 +975,7 @@ async function gerarPdfPg(lista, filtro) {
   for (let p = 1; p <= pags; p++) { doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(138, 153, 168); doc.text(pdfTxt(notasPg(lista, r) + ' Dados do Sales Cube de ' + DADOS.gerado), M, H - 7, { maxWidth: W - 2 * M - 30 }); doc.text('Página ' + p + ' de ' + pags, W - M, H - 7, { align: 'right' }); }
   return doc.output('blob');
 }
+
 let aba = 'vendas';   // sempre abre em Vendas
 function trocarAba(a) {
   aba = a;
@@ -981,10 +983,12 @@ function trocarAba(a) {
   document.getElementById('abaPg').setAttribute('aria-selected', a === 'pg');
   document.getElementById('viewVendas').hidden = a !== 'vendas';
   document.getElementById('viewPg').hidden = a !== 'pg';
+  
   // o botão se chama sempre "Baixar PDF desta lista" (pedido do Pablo); na aba de pagamentos ele baixa o PDF dos pagamentos
 }
 document.getElementById('abaVendas').addEventListener('click', () => trocarAba('vendas'));
 document.getElementById('abaPg').addEventListener('click', () => trocarAba('pg'));
+
 trocarAba(aba);
 registrarNovidades();
 
