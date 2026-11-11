@@ -217,7 +217,7 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
 .cbtab td, .cbtab th { white-space: nowrap; padding-left: 5px; padding-right: 5px }
 .cbtab td { font-size: 13px }
 .cbtab th { letter-spacing: .03em; font-size: 10.5px; white-space: normal; line-height: 1.25; vertical-align: bottom }
-.cbtab td.fe { white-space: normal; min-width: 9em; max-width: 13em }
+.cbtab td.fe { white-space: normal; min-width: 9em; max-width: 15em }
 .cbtab th.c, .cbtab td.c { text-align: center }
 .cbtab td.n { color: var(--ink-2); text-align: right }
 .cbtab td.un { color: var(--ink-2) }
@@ -442,7 +442,7 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
       <h2 class="pgh">Vendas pagas com cheque ou boleto <small id="cbConta"></small></h2>
       <div class="cbres" id="cbRes"></div>
       <div class="lista rolar"><table class="cbtab">
-        <thead><tr><th class="r">#</th><th>Pitch</th><th>Unidade</th><th>Cliente</th><th class="r">Valor da venda</th><th class="r">Entrada</th><th>Forma da entrada</th><th class="r">Cheque</th><th class="r">Boleto</th><th class="c">Parcelas</th><th class="r">Valor da parcela</th><th>Data no ZS</th><th>Banco</th></tr></thead>
+        <thead><tr><th class="r">#</th><th>Pitch</th><th>Unidade</th><th>Cliente</th><th class="r">Valor da venda</th><th class="r">Entrada</th><th>Forma da entrada</th><th class="r">Cheque</th><th class="r">Boleto</th><th class="c">Parcelas</th><th class="r">Valor da parcela</th><th>Data no ZS</th><th>Última parcela</th></tr></thead>
         <tbody id="cbCorpo"></tbody>
         <tfoot id="cbPe"></tfoot>
       </table></div>
@@ -1013,6 +1013,14 @@ async function gerarPdfPg(lista, filtro) {
    Uma linha por venda com cheque ou boleto: entrada (o que foi pago de outra forma), valor em cheque e em boleto,
    parcelas e valor da parcela (conta: o ZS só guarda o total e o nº de parcelas), data e banco do pagamento. */
 const CB_FORMAS = ['Cheque', 'Boleto'];
+// Última parcela = data do pagamento no ZS + (parcelas − 1) meses; dia que não existe no mês cai no último dia (31/01 → 28/02)
+function fimParcelas(d, x) {
+  const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(d || ''); if (!m) return '—';
+  if (!(x > 1)) return d;
+  const dia = +m[1], alvo = new Date(+m[3], +m[2] - 1 + x - 1, 1);
+  const ult = new Date(alvo.getFullYear(), alvo.getMonth() + 1, 0).getDate();
+  return String(Math.min(dia, ult)).padStart(2, '0') + '/' + String(alvo.getMonth() + 1).padStart(2, '0') + '/' + alvo.getFullYear();
+}
 function bancoCurto(b) {
   const t = (b || '').toUpperCase();
   if (!t) return '—';
@@ -1033,7 +1041,7 @@ function linhasCb(lista) {
     const soma = f => pgs.filter(p => p.f === f).reduce((a, p) => a + p.v, 0);
     const p0 = cb.slice().sort((a, b) => b.v - a.v)[0];
     return { v, un: 'Vitória' /* a org 7 do ZS ("Matriz") é Vitória: não existe unidade Matriz (Pablo, 11/11/2026) */, venda: v.venda || v.b, entrada: ent.reduce((a, p) => a + p.v, 0), forma: formaEntrada(ent),
-      cheque: soma('Cheque'), boleto: soma('Boleto'), q: parcelas(p0.x, p0.v), d: p0.d || 'sem data', bco: bancoCurto(p0.bco) };
+      cheque: soma('Cheque'), boleto: soma('Boleto'), q: parcelas(p0.x, p0.v), d: p0.d || (v.fecha ? v.fecha + ' (fechamento)' : 'sem data'), fim: fimParcelas(p0.d || v.fecha, p0.x), bco: bancoCurto(p0.bco) };   // sem data no pagamento → data de fechamento da venda
   });
 }
 let cbFiltro = 'todos';   // card clicado: cheque · boleto · entrada · todos (Valor das vendas)
@@ -1054,12 +1062,12 @@ function renderCb(lista, ts) {
     <td class="nome"><a href="${esc(r.v.link)}" target="_blank" rel="noopener" title="Abrir a venda no Sales Cube">${realce(r.v.n, ts)}</a></td>
     <td class="r">${brl(r.venda)}</td><td class="r">${val(r.entrada) || '—'}</td><td class="det fe">${esc(r.forma)}</td>
     <td class="r">${val(r.cheque)}</td><td class="r">${val(r.boleto)}</td><td class="c">${q.avista ? '1x' : q.x + 'x'}</td>
-    <td class="r par"${dica ? ` title="${dica}"` : ''}>${par}</td><td class="det">${esc(r.d)}</td><td class="det">${esc(r.bco)}</td></tr>`;
+    <td class="r par"${dica ? ` title="${dica}"` : ''}>${par}</td><td class="det">${esc(r.d)}</td><td>${esc(r.fim)}</td></tr>`;
   }).join('');
   document.getElementById('cbPe').innerHTML = L.length ? `<tr><td></td><td></td><td></td><td>Total · ${L.length} ${L.length === 1 ? 'venda' : 'vendas'}</td><td class="r">${brl(t('venda'))}</td><td class="r">${brl(t('entrada'))}</td><td></td><td class="r">${val(t('cheque'))}</td><td class="r">${val(t('boleto'))}</td><td></td><td></td><td></td><td></td></tr>` : '';
   const notas = ['Entrada = o que foi pago de outra forma (PIX ou cartão). Entrada + cheque + boleto = valor da venda.'];
   if (L.some(r => !r.q.avista && !r.q.exata)) notas.push('* A divisão não fecha no centavo: a última parcela ajusta (passe o mouse ou toque para ver).');
-  notas.push('O valor da parcela é calculado (total ÷ parcelas): o ZS guarda só o total e o número de parcelas. A data é a do pagamento no ZS.');
+  notas.push('O valor da parcela é calculado (total ÷ parcelas): o ZS guarda só o total e o número de parcelas. A data é a do pagamento no ZS (sem ela, a do fechamento da venda); a última parcela é essa data + (parcelas − 1) meses.');
   document.getElementById('cbNota').textContent = notas.join(' ');
   document.getElementById('cbVazio').hidden = L.length > 0;
   document.querySelector('.cbtab').hidden = !L.length;
@@ -1075,13 +1083,13 @@ async function gerarPdfCb(lista, filtro) {
   doc.setTextColor(227, 178, 90); doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.text(('Febracis Vitória · ' + PITCHES).toUpperCase(), M, 10);
   doc.setTextColor(255, 255, 255); doc.setFontSize(17); doc.text('Mentoria Business — Cheque / Boleto', M, 19);
   doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(185, 200, 214); doc.text(pdfTxt('Lista: ' + (filtro || 'todas as vendas') + ' · cheque R$ ' + brl(t('cheque')) + ' · boleto R$ ' + brl(t('boleto'))), M, 25.5);
-  const body = L.map((r, i) => [i + 1, r.v.p, r.un, r.v.n, brl(r.venda), r.entrada > 0 ? brl(r.entrada) : '—', r.forma, r.cheque > 0 ? brl(r.cheque) : '', r.boleto > 0 ? brl(r.boleto) : '', r.q.avista ? '1x' : r.q.x + 'x', r.q.avista ? 'à vista' : brl(r.q.p) + (r.q.exata ? '' : '*'), r.d, r.bco]);
+  const body = L.map((r, i) => [i + 1, r.v.p, r.un, r.v.n, brl(r.venda), r.entrada > 0 ? brl(r.entrada) : '—', r.forma, r.cheque > 0 ? brl(r.cheque) : '', r.boleto > 0 ? brl(r.boleto) : '', r.q.avista ? '1x' : r.q.x + 'x', r.q.avista ? 'à vista' : brl(r.q.p) + (r.q.exata ? '' : '*'), r.d, r.fim]);
   body.push(['', '', '', 'Total · ' + L.length + ' vendas', brl(t('venda')), brl(t('entrada')), '', brl(t('cheque')), brl(t('boleto')), '', '', '', '']);
   doc.autoTable({ theme: 'plain', startY: 36, margin: { left: M, right: M, bottom: 14 },
     styles: { font: 'helvetica', fontSize: 8, cellPadding: 1.8, textColor: [19, 41, 61], overflow: 'ellipsize', lineColor: [217, 225, 232], lineWidth: { bottom: .2 } },
     headStyles: { fontStyle: 'bold', fontSize: 7, textColor: [77, 98, 118], lineColor: [19, 41, 61], lineWidth: { bottom: .5 } },
-    head: [['#', 'Pitch', 'Unidade', 'Cliente', 'Valor da venda', 'Entrada', 'Forma da entrada', 'Cheque', 'Boleto', 'Parcelas', 'Valor da parcela', 'Data no ZS', 'Banco']], body,
-    columnStyles: { 0: { cellWidth: 7, halign: 'right' }, 1: { cellWidth: 22 }, 2: { cellWidth: 15 }, 3: { cellWidth: 52, fontStyle: 'bold' }, 4: { halign: 'right', cellWidth: 21 }, 5: { halign: 'right', cellWidth: 17 }, 6: { cellWidth: 40 }, 7: { halign: 'right', cellWidth: 18 }, 8: { halign: 'right', cellWidth: 18 }, 9: { halign: 'center', cellWidth: 14 }, 10: { halign: 'right', cellWidth: 18 }, 11: { cellWidth: 18 }, 12: { cellWidth: 17 } },
+    head: [['#', 'Pitch', 'Unidade', 'Cliente', 'Valor da venda', 'Entrada', 'Forma da entrada', 'Cheque', 'Boleto', 'Parcelas', 'Valor da parcela', 'Data no ZS', 'Última parcela']], body,
+    columnStyles: { 0: { cellWidth: 6, halign: 'right' }, 1: { cellWidth: 21 }, 2: { cellWidth: 13 }, 3: { cellWidth: 46, fontStyle: 'bold' }, 4: { halign: 'right', cellWidth: 19 }, 5: { halign: 'right', cellWidth: 16 }, 6: { cellWidth: 36 }, 7: { halign: 'right', cellWidth: 17 }, 8: { halign: 'right', cellWidth: 17 }, 9: { halign: 'center', cellWidth: 13 }, 10: { halign: 'right', cellWidth: 17 }, 11: { cellWidth: 17 }, 12: { cellWidth: 21, fontStyle: 'bold' } },
     didParseCell: d => { if (d.section === 'head') { d.cell.styles.halign = [0, 4, 5, 7, 8, 10].includes(d.column.index) ? 'right' : d.column.index === 9 ? 'center' : 'left'; return; } if (d.row.index === body.length - 1) { d.cell.styles.fillColor = [19, 41, 61]; d.cell.styles.textColor = [255, 255, 255]; d.cell.styles.fontStyle = 'bold'; } }
   });
   const pags = doc.getNumberOfPages();
