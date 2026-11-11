@@ -1,6 +1,5 @@
 <!doctype html>
-<html lang="pt-BR"><head>
-<meta name="robots" content="noindex,nofollow"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body style="margin:0">
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body style="margin:0">
 <title>Busca Mentoria Business</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
@@ -32,7 +31,7 @@
 html, body { overflow-x: clip }
 body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.45 }
 .gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
-.inner { max-width: 1180px; margin: 0 auto; min-width: 0 }
+.inner { max-width: 1400px; margin: 0 auto; min-width: 0 }   /* 1400 escolhido pelo Pablo na prévia de tamanho (11/11/2026) */
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap }
 
@@ -210,6 +209,27 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
 .nv-pill.alt { background: var(--neg-bg); color: var(--neg) } .nv-pill.rem { background: var(--est-bg); color: var(--est) }
 
 
+
+/* Cheque / Boleto (11/11/2026) */
+.cbview { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px }
+/* 13 colunas dentro da margem da página: títulos em até 2 linhas, forma da entrada quebra quando é longa */
+.cbtab { width: 100% }
+.cbtab td, .cbtab th { white-space: nowrap; padding-left: 5px; padding-right: 5px }
+.cbtab td { font-size: 13px }
+.cbtab th { letter-spacing: .03em; font-size: 10.5px; white-space: normal; line-height: 1.25; vertical-align: bottom }
+.cbtab td.fe { white-space: normal; min-width: 9em; max-width: 13em }
+.cbtab th.c, .cbtab td.c { text-align: center }
+.cbtab td.n { color: var(--ink-2); text-align: right }
+.cbtab td.un { color: var(--ink-2) }
+.cbtab td.par i { font-style: normal; color: var(--gold); margin-left: 1px }
+.cbtab tfoot td { font-weight: 800 }
+.cbres { display: flex; gap: 10px; flex-wrap: wrap }
+.cbres button { font: inherit; color: var(--ink); text-align: left; cursor: pointer; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 10px 14px; min-width: 150px; transition: border-color .15s, box-shadow .15s, background .15s }
+.cbres button:hover { border-color: var(--gold) }
+.cbres button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px }
+.cbres button[aria-pressed="true"] { border: 2px solid var(--gold); padding: 9px 13px; background: color-mix(in srgb, var(--gold) 9%, var(--surface)); box-shadow: 0 2px 10px color-mix(in srgb, var(--gold) 22%, transparent) }
+.cbres span { display: block; font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2) }
+.cbres b { font: 800 17px/1.3 var(--display); font-variant-numeric: tabular-nums }
 
 /* Formas de pagamento */
 .pgview { display: grid; gap: 22px }
@@ -397,6 +417,7 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
       <button type="button" role="tab" id="abaVendas" aria-selected="true" aria-controls="viewVendas">Vendas</button>
       
       <button type="button" role="tab" id="abaPg" aria-selected="false" aria-controls="viewPg">Formas de pagamento</button>
+      <button type="button" role="tab" id="abaCb" aria-selected="false" aria-controls="viewCb">Cheque / Boleto</button>
     </div>
     
     <section id="viewPg" class="pgview" role="tabpanel" aria-labelledby="abaPg" hidden>
@@ -416,6 +437,17 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
           <tfoot><tr><td></td><td id="pgTLabel">Total recebido</td><td></td><td></td><td></td><td></td><td></td><td class="r" id="pgTotal"></td></tr></tfoot>
         </table></div>
       </div>
+    </section>
+    <section id="viewCb" class="cbview" role="tabpanel" aria-labelledby="abaCb" hidden>
+      <h2 class="pgh">Vendas pagas com cheque ou boleto <small id="cbConta"></small></h2>
+      <div class="cbres" id="cbRes"></div>
+      <div class="lista rolar"><table class="cbtab">
+        <thead><tr><th class="r">#</th><th>Pitch</th><th>Unidade</th><th>Cliente</th><th class="r">Valor da venda</th><th class="r">Entrada</th><th>Forma da entrada</th><th class="r">Cheque</th><th class="r">Boleto</th><th class="c">Parcelas</th><th class="r">Valor da parcela</th><th>Data no ZS</th><th>Banco</th></tr></thead>
+        <tbody id="cbCorpo"></tbody>
+        <tfoot id="cbPe"></tfoot>
+      </table></div>
+      <p class="pgnota" id="cbNota"></p>
+      <div class="vazio" id="cbVazio" hidden><b>Nenhuma venda com cheque ou boleto nesta lista</b>Confira o filtro ou toque em “Mostrar todas as vendas”.</div>
     </section>
     <div class="lista" id="viewVendas" role="tabpanel" aria-labelledby="abaVendas">
       <table>
@@ -610,6 +642,7 @@ function render(animar) {
   document.getElementById('limpar').hidden = !estado.q;
   document.getElementById('atalho').hidden = !!estado.q;
   renderPg(lista, ts);
+  renderCb(lista, ts);
   
   document.getElementById('filtroPrint').textContent ='Lista: ' + (filtro || 'todas as vendas') + ' · ' + lista.length + ' vendas · valor R$ ' + brl(tb);
 }
@@ -743,6 +776,7 @@ const btnA = document.getElementById('btnAtualizar'), btnArq = document.getEleme
 btnV.addEventListener('pointerenter', () => libsPdf().catch(() => {}), { once: true });
 btnV.addEventListener('click', () => acao(btnV, 'Preparando…', async () => {
   if (aba === 'pg') await salvarBlob('Mentoria-Business-pagamentos.pdf', await gerarPdfPg(listaAtual(), descricaoFiltro()));
+  else if (aba === 'cb') await salvarBlob('Mentoria-Business-cheque-boleto.pdf', await gerarPdfCb(listaAtual(), descricaoFiltro()));
   else await salvarBlob('Mentoria-Business-lista.pdf', await gerarPdf(listaAtual(), descricaoFiltro(), false));
   toast('PDF pronto.');
 }));
@@ -975,6 +1009,85 @@ async function gerarPdfPg(lista, filtro) {
   for (let p = 1; p <= pags; p++) { doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(138, 153, 168); doc.text(pdfTxt(notasPg(lista, r) + ' Dados do Sales Cube de ' + DADOS.gerado), M, H - 7, { maxWidth: W - 2 * M - 30 }); doc.text('Página ' + p + ' de ' + pags, W - M, H - 7, { align: 'right' }); }
   return doc.output('blob');
 }
+/* ---------- Aba Cheque / Boleto (pedido do Pablo, 11/11/2026) ----------
+   Uma linha por venda com cheque ou boleto: entrada (o que foi pago de outra forma), valor em cheque e em boleto,
+   parcelas e valor da parcela (conta: o ZS só guarda o total e o nº de parcelas), data e banco do pagamento. */
+const CB_FORMAS = ['Cheque', 'Boleto'];
+function bancoCurto(b) {
+  const t = (b || '').toUpperCase();
+  if (!t) return '—';
+  const mapa = [['BRADESCO', 'Bradesco'], ['BANCO DO BRASIL', 'Banco do Brasil'], ['EST. DO ES', 'Banestes'], ['BANESTES', 'Banestes'], ['SICOOB', 'Sicoob'], ['SICREDI', 'Sicredi'], ['NU FINANCEIRA', 'Nu Financeira'], ['NU PAGAMENTOS', 'Nubank'], ['ITAU', 'Itaú'], ['SANTANDER', 'Santander'], ['CAIXA', 'Caixa'], ['INTER', 'Inter'], ['STONE', 'Stone'], ['PAGARE', 'Pagare']];
+  const m = mapa.find(([k]) => t.includes(k));
+  return m ? m[1] : b;
+}
+function rotuloEntrada(p) { return p.f === 'Cartão de crédito' ? 'Cartão' : p.f + (p.g === 'FRZ Pay' || p.g === 'CISPay' ? ' ' + p.g : ''); }
+function formaEntrada(ent) {
+  if (!ent.length) return '—';
+  const g = new Map(); ent.forEach(p => { const k = rotuloEntrada(p); g.set(k, (g.get(k) || []).concat(p.v)); });
+  if (g.size === 1) { const [k, vs] = [...g][0]; return vs.length > 1 ? `${k} (${vs.map(brl).join(' + ')})` : k; }
+  return [...g].map(([k, vs]) => `${k} ${brl(vs.reduce((a, b) => a + b, 0))}`).join(' + ');
+}
+function linhasCb(lista) {
+  return lista.filter(v => (v.pg || []).some(p => CB_FORMAS.includes(p.f))).map(v => {
+    const pgs = v.pg || [], cb = pgs.filter(p => CB_FORMAS.includes(p.f)), ent = pgs.filter(p => !CB_FORMAS.includes(p.f));
+    const soma = f => pgs.filter(p => p.f === f).reduce((a, p) => a + p.v, 0);
+    const p0 = cb.slice().sort((a, b) => b.v - a.v)[0];
+    return { v, un: /\/organization\/7\//.test(v.link) ? 'Matriz' : 'Vitória', venda: v.venda || v.b, entrada: ent.reduce((a, p) => a + p.v, 0), forma: formaEntrada(ent),
+      cheque: soma('Cheque'), boleto: soma('Boleto'), q: parcelas(p0.x, p0.v), d: p0.d || 'sem data', bco: bancoCurto(p0.bco) };
+  });
+}
+let cbFiltro = 'todos';   // card clicado: cheque · boleto · entrada · todos (Valor das vendas)
+function renderCb(lista, ts) {
+  const T = linhasCb(lista), tt = k => T.reduce((a, r) => a + r[k], 0);
+  const L = cbFiltro === 'todos' ? T : T.filter(r => r[cbFiltro] > 0), t = k => L.reduce((a, r) => a + r[k], 0);
+  const nCh = T.filter(r => r.cheque > 0).length, nBo = T.filter(r => r.boleto > 0).length;
+  const rotF = { cheque: 'só com cheque', boleto: 'só com boleto', entrada: 'só com entrada' }[cbFiltro];
+  document.getElementById('cbConta').textContent = `${T.length} ${T.length === 1 ? 'venda' : 'vendas'} · ${nCh} com cheque · ${nBo} com boleto` + (rotF ? ` · mostrando ${L.length} (${rotF})` : '');
+  const card = (k, rot, v, dica) => `<button type="button" data-cb="${k}" aria-pressed="${cbFiltro === k}" title="${dica}"><span>${rot}</span><b>R$ ${brl(v)}</b></button>`;
+  document.getElementById('cbRes').innerHTML = card('cheque', 'Cheque', tt('cheque'), 'Mostrar só as vendas com cheque') + card('boleto', 'Boleto', tt('boleto'), 'Mostrar só as vendas com boleto')
+    + card('entrada', 'Entrada', tt('entrada'), 'Mostrar só as vendas com entrada') + card('todos', 'Valor das vendas', tt('venda'), 'Mostrar todas as vendas com cheque ou boleto');
+  const val = n => n > 0 ? brl(n) : '';
+  document.getElementById('cbCorpo').innerHTML = L.map((r, i) => {
+    const q = r.q, par = q.avista ? 'à vista' : brl(q.p) + (q.exata ? '' : '<i>*</i>');
+    const dica = q.avista ? '' : (q.exata ? `${q.x} parcelas de R$ ${brl(q.p)}` : `${q.x - 1} parcelas de R$ ${brl(q.p)} + 1 de R$ ${brl(q.ult)}`);
+    return `<tr><td class="n">${i + 1}</td><td><span class="pitch">${esc(r.v.p)}</span></td><td class="un">${r.un}</td>
+    <td class="nome"><a href="${esc(r.v.link)}" target="_blank" rel="noopener" title="Abrir a venda no Sales Cube">${realce(r.v.n, ts)}</a></td>
+    <td class="r">${brl(r.venda)}</td><td class="r">${val(r.entrada) || '—'}</td><td class="det fe">${esc(r.forma)}</td>
+    <td class="r">${val(r.cheque)}</td><td class="r">${val(r.boleto)}</td><td class="c">${q.avista ? '1x' : q.x + 'x'}</td>
+    <td class="r par"${dica ? ` title="${dica}"` : ''}>${par}</td><td class="det">${esc(r.d)}</td><td class="det">${esc(r.bco)}</td></tr>`;
+  }).join('');
+  document.getElementById('cbPe').innerHTML = L.length ? `<tr><td></td><td></td><td></td><td>Total · ${L.length} ${L.length === 1 ? 'venda' : 'vendas'}</td><td class="r">${brl(t('venda'))}</td><td class="r">${brl(t('entrada'))}</td><td></td><td class="r">${val(t('cheque'))}</td><td class="r">${val(t('boleto'))}</td><td></td><td></td><td></td><td></td></tr>` : '';
+  const notas = ['Entrada = o que foi pago de outra forma (PIX ou cartão). Entrada + cheque + boleto = valor da venda.'];
+  if (L.some(r => !r.q.avista && !r.q.exata)) notas.push('* A divisão não fecha no centavo: a última parcela ajusta (passe o mouse ou toque para ver).');
+  notas.push('O valor da parcela é calculado (total ÷ parcelas): o ZS guarda só o total e o número de parcelas. A data é a do pagamento no ZS.');
+  document.getElementById('cbNota').textContent = notas.join(' ');
+  document.getElementById('cbVazio').hidden = L.length > 0;
+  document.querySelector('.cbtab').hidden = !L.length;
+  document.getElementById('cbRes').hidden = !T.length;
+}
+async function gerarPdfCb(lista, filtro) {
+  await libsPdf();
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  const T0 = linhasCb(lista), L = cbFiltro === 'todos' ? T0 : T0.filter(r => r[cbFiltro] > 0), t = k => L.reduce((a, r) => a + r[k], 0);
+  const W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight(), M = 10;
+  doc.setFillColor(15, 34, 54); doc.rect(0, 0, W, 30, 'F');
+  doc.setTextColor(227, 178, 90); doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.text(('Febracis Vitória · ' + PITCHES).toUpperCase(), M, 10);
+  doc.setTextColor(255, 255, 255); doc.setFontSize(17); doc.text('Mentoria Business — Cheque / Boleto', M, 19);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(185, 200, 214); doc.text(pdfTxt('Lista: ' + (filtro || 'todas as vendas') + ' · cheque R$ ' + brl(t('cheque')) + ' · boleto R$ ' + brl(t('boleto'))), M, 25.5);
+  const body = L.map((r, i) => [i + 1, r.v.p, r.un, r.v.n, brl(r.venda), r.entrada > 0 ? brl(r.entrada) : '—', r.forma, r.cheque > 0 ? brl(r.cheque) : '', r.boleto > 0 ? brl(r.boleto) : '', r.q.avista ? '1x' : r.q.x + 'x', r.q.avista ? 'à vista' : brl(r.q.p) + (r.q.exata ? '' : '*'), r.d, r.bco]);
+  body.push(['', '', '', 'Total · ' + L.length + ' vendas', brl(t('venda')), brl(t('entrada')), '', brl(t('cheque')), brl(t('boleto')), '', '', '', '']);
+  doc.autoTable({ theme: 'plain', startY: 36, margin: { left: M, right: M, bottom: 14 },
+    styles: { font: 'helvetica', fontSize: 8, cellPadding: 1.8, textColor: [19, 41, 61], overflow: 'ellipsize', lineColor: [217, 225, 232], lineWidth: { bottom: .2 } },
+    headStyles: { fontStyle: 'bold', fontSize: 7, textColor: [77, 98, 118], lineColor: [19, 41, 61], lineWidth: { bottom: .5 } },
+    head: [['#', 'Pitch', 'Unidade', 'Cliente', 'Valor da venda', 'Entrada', 'Forma da entrada', 'Cheque', 'Boleto', 'Parcelas', 'Valor da parcela', 'Data no ZS', 'Banco']], body,
+    columnStyles: { 0: { cellWidth: 7, halign: 'right' }, 1: { cellWidth: 22 }, 2: { cellWidth: 15 }, 3: { cellWidth: 52, fontStyle: 'bold' }, 4: { halign: 'right', cellWidth: 21 }, 5: { halign: 'right', cellWidth: 17 }, 6: { cellWidth: 40 }, 7: { halign: 'right', cellWidth: 18 }, 8: { halign: 'right', cellWidth: 18 }, 9: { halign: 'center', cellWidth: 14 }, 10: { halign: 'right', cellWidth: 18 }, 11: { cellWidth: 18 }, 12: { cellWidth: 17 } },
+    didParseCell: d => { if (d.section === 'head') { d.cell.styles.halign = [0, 4, 5, 7, 8, 10].includes(d.column.index) ? 'right' : d.column.index === 9 ? 'center' : 'left'; return; } if (d.row.index === body.length - 1) { d.cell.styles.fillColor = [19, 41, 61]; d.cell.styles.textColor = [255, 255, 255]; d.cell.styles.fontStyle = 'bold'; } }
+  });
+  const pags = doc.getNumberOfPages();
+  for (let p = 1; p <= pags; p++) { doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(138, 153, 168); doc.text(pdfTxt(document.getElementById('cbNota').textContent + ' Dados do Sales Cube de ' + DADOS.gerado), M, H - 7, { maxWidth: W - 2 * M - 30 }); doc.text('Página ' + p + ' de ' + pags, W - M, H - 7, { align: 'right' }); }
+  return doc.output('blob');
+}
 
 let aba = 'vendas';   // sempre abre em Vendas
 function trocarAba(a) {
@@ -983,11 +1096,20 @@ function trocarAba(a) {
   document.getElementById('abaPg').setAttribute('aria-selected', a === 'pg');
   document.getElementById('viewVendas').hidden = a !== 'vendas';
   document.getElementById('viewPg').hidden = a !== 'pg';
+  document.getElementById('abaCb').setAttribute('aria-selected', a === 'cb');
+  document.getElementById('viewCb').hidden = a !== 'cb';
   
   // o botão se chama sempre "Baixar PDF desta lista" (pedido do Pablo); na aba de pagamentos ele baixa o PDF dos pagamentos
 }
 document.getElementById('abaVendas').addEventListener('click', () => trocarAba('vendas'));
 document.getElementById('abaPg').addEventListener('click', () => trocarAba('pg'));
+document.getElementById('abaCb').addEventListener('click', () => trocarAba('cb'));
+document.getElementById('cbRes').addEventListener('click', e => {
+  const b = e.target.closest('button[data-cb]'); if (!b) return;
+  cbFiltro = b.dataset.cb === cbFiltro ? 'todos' : b.dataset.cb;   // clicar de novo no card ativo volta para todas
+  render(false);
+});
+document.getElementById('cbCorpo').addEventListener('click', e => { const t = e.target.closest('td[title]'); if (t) toast(t.getAttribute('title')); });
 
 trocarAba(aba);
 registrarNovidades();
