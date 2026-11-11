@@ -1041,7 +1041,7 @@ function linhasCb(lista) {
     const soma = f => pgs.filter(p => p.f === f).reduce((a, p) => a + p.v, 0);
     const p0 = cb.slice().sort((a, b) => b.v - a.v)[0];
     return { v, un: 'Vitória' /* a org 7 do ZS ("Matriz") é Vitória: não existe unidade Matriz (Pablo, 11/11/2026) */, venda: v.venda || v.b, entrada: ent.reduce((a, p) => a + p.v, 0), forma: formaEntrada(ent),
-      cheque: soma('Cheque'), boleto: soma('Boleto'), q: parcelas(p0.x, p0.v), d: p0.d || (v.fecha ? v.fecha + ' (fechamento)' : 'sem data'), fim: fimParcelas(p0.d || v.fecha, p0.x), bco: bancoCurto(p0.bco) };   // sem data no pagamento → data de fechamento da venda
+      cheque: soma('Cheque'), boleto: soma('Boleto'), q: parcelas(p0.x, p0.v), d: p0.d || v.fecha || 'sem data', fim: fimParcelas(p0.d || v.fecha, p0.x), bco: bancoCurto(p0.bco) };   // sem data no pagamento → data de fechamento da venda
   });
 }
 let cbFiltro = 'todos';   // card clicado: cheque · boleto · entrada · todos (Valor das vendas)
