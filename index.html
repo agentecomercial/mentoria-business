@@ -368,7 +368,7 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
   <div class="inner">
     <div class="topo">
       <div>
-        <div class="eyebrow">Febracis Vitória · Pitch FGPC 24 e Pitch MCIS252 e Pitch CEOP17 e Mentor ALBERTO FREITAS e Mentor MATEUS COSTA e Pitch IF22</div>
+        <div class="eyebrow">Febracis Vitória · Pitch FGPC 24 e Pitch MCIS252 e Pitch CEOP17 e Mentor ALBERTO FREITAS e Mentor MATEUS COSTA e Pitch IF22 e Pitch BHP19</div>
         <h1>Mentoria Business — Combo 3 Mentorias <span class="selo-sync" id="sync" aria-live="polite"></span></h1>
         <p class="lead">Todas as vendas da Mentoria nos pitches.</p>
       </div>
@@ -680,7 +680,7 @@ function libsPdf() {
   return libs;
 }
 const pdfTxt = s => String(s).replace(/⚠\s*/g, '! ').replace(/[“”]/g, '"');
-const PITCHES = 'Pitch FGPC 24 e Pitch MCIS252 e Pitch CEOP17 e Mentor ALBERTO FREITAS e Mentor MATEUS COSTA e Pitch IF22';
+const PITCHES = 'Pitch FGPC 24 e Pitch MCIS252 e Pitch CEOP17 e Mentor ALBERTO FREITAS e Mentor MATEUS COSTA e Pitch IF22 e Pitch BHP19';
 async function gerarPdf(lista, filtro, comContatos) {
   await libsPdf();
   const { jsPDF } = window.jspdf;
