@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body style="margin:0">
+<html lang="pt-BR"><head><meta name="robots" content="noindex, nofollow"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body style="margin:0">
 <title>Busca Mentoria Business</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
@@ -124,6 +124,8 @@ h1 .selo-sync.busy .ponto { animation: pisca 1s ease-in-out infinite }
 .pop .it.zero { color: var(--ink-2) }
 .pop .sep { height: 1px; background: var(--rule); margin: 4px 6px }
 .pop .vazio-p { padding: 10px; color: var(--ink-2); font-size: 13.5px }
+.pop .dica-p { padding: 8px 10px 4px; color: var(--ink-2); font-size: 12px; border-top: 1px solid rgba(127,140,163,.25); margin-top: 6px }
+.pop .dica-p b { font-weight: 700 }
 .info { width: 100%; display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 13.5px; color: var(--ink-2) }
 .link-btn { font: 600 13.5px var(--body); color: var(--neg); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px }
 
@@ -209,6 +211,20 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
 .nv-pill.alt { background: var(--neg-bg); color: var(--neg) } .nv-pill.rem { background: var(--est-bg); color: var(--est) }
 
 
+
+/* Mais de 1 vaga (prévia 1 aprovada pelo Pablo, 19/11/2026): mesma base da Cheque / Boleto */
+.mvres > div { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 10px 14px; min-width: 150px }
+.mvres > div span { display: block; font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2) }
+.mvres > div b { font: 800 17px/1.3 var(--display); font-variant-numeric: tabular-nums }
+.mvres > div small { display: block; font-size: 12px; color: var(--ink-2) }
+.mvres > div.alerta b { color: var(--est) }
+.mvtab td { font-size: 13.5px }
+.mvtab .qt { display: inline-flex; align-items: center; justify-content: center; min-width: 26px; height: 22px; padding: 0 7px; border-radius: 99px; background: var(--gold); color: #fff; font: 800 12.5px var(--display) }
+.mvtab tr.sub td { background: var(--surface-2); font-size: 12.5px; padding-top: 4px; padding-bottom: 4px }
+.mvtab tr.sub td.nome { padding-left: 24px; color: var(--ink-2); font-weight: 500 }
+.mvtab tr.sub small { color: var(--ink-2); margin-left: 4px }
+.mvtab .adef { color: var(--est); font-weight: 700 }
+.mvtab tfoot td { font-weight: 800 }
 
 /* Cheque / Boleto (11/11/2026) */
 .cbview { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px }
@@ -368,7 +384,7 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
   <div class="inner">
     <div class="topo">
       <div>
-        <div class="eyebrow">Febracis Vitória · Pitch FGPC 24 e Pitch MCIS252 e Pitch CEOP17 e Mentor ALBERTO FREITAS e Mentor MATEUS COSTA e Pitch IF22 e Pitch BHP19</div>
+        <div class="eyebrow">Febracis Vitória · Pitch FGPC 24 e Pitch MCIS252 e Pitch CEOP17 e Mentor ALBERTO FREITAS e Mentor MATEUS COSTA e Pitch IF22 e Pitch Coaching Day e Pitch BHP19 e Turma MASTER COACHING</div>
         <h1>Mentoria Business — Combo 3 Mentorias <span class="selo-sync" id="sync" aria-live="polite"></span></h1>
         <p class="lead">Todas as vendas da Mentoria nos pitches.</p>
       </div>
@@ -418,6 +434,7 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
       
       <button type="button" role="tab" id="abaPg" aria-selected="false" aria-controls="viewPg">Formas de pagamento</button>
       <button type="button" role="tab" id="abaCb" aria-selected="false" aria-controls="viewCb">Cheque / Boleto</button>
+      <button type="button" role="tab" id="abaMv" aria-selected="false" aria-controls="viewMv">Mais de 1 vaga</button>
     </div>
     
     <section id="viewPg" class="pgview" role="tabpanel" aria-labelledby="abaPg" hidden>
@@ -448,6 +465,17 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
       </table></div>
       <p class="pgnota" id="cbNota"></p>
       <div class="vazio" id="cbVazio" hidden><b>Nenhuma venda com cheque ou boleto nesta lista</b>Confira o filtro ou toque em “Mostrar todas as vendas”.</div>
+    </section>
+    <section id="viewMv" class="cbview" role="tabpanel" aria-labelledby="abaMv" hidden>
+      <h2 class="pgh">Vendas com mais de 1 vaga <small id="mvConta"></small></h2>
+      <div class="cbres mvres" id="mvRes"></div>
+      <div class="lista rolar"><table class="cbtab mvtab">
+        <thead><tr><th class="r">#</th><th>Pitch</th><th>Cliente</th><th class="c">Vagas</th><th>Situação</th><th class="r">Valor</th><th class="r">Por vaga</th><th>Telefone</th></tr></thead>
+        <tbody id="mvCorpo"></tbody>
+        <tfoot id="mvPe"></tfoot>
+      </table></div>
+      <p class="pgnota" id="mvNota"></p>
+      <div class="vazio" id="mvVazio" hidden><b>Nenhuma venda com mais de 1 vaga nesta lista</b>Confira o filtro ou toque em “Mostrar todas as vendas”.</div>
     </section>
     <div class="lista" id="viewVendas" role="tabpanel" aria-labelledby="abaVendas">
       <table>
@@ -528,20 +556,41 @@ CARTOES.forEach(([k, lbl]) => {
 /* Pitch */
 const ddBtn = document.getElementById('ddPitch'), ddPop = document.getElementById('popPitch'), ddBusca = document.getElementById('ddBusca'), ddLista = document.getElementById('ddLista');
 let qtdPitch = () => 0;   // render() troca por uma que conta com a busca e o status atuais
-function escolherPitch(val) { estado.pitch = val; salvar(); fecharPitch(true); render(true); }
+function selPitch() { return Array.isArray(estado.pitch) ? estado.pitch.slice() : (estado.pitch === 'todos' ? [] : [estado.pitch]); }
+// clique simples: só este pitch (fecha). Ctrl/Cmd + clique, ou SEGURAR no celular: soma ou tira este pitch e o menu fica aberto.
+function escolherPitch(val, soma) {
+  let a = selPitch();
+  if (val === 'todos') a = [];
+  else if (soma) a = a.includes(val) ? a.filter(x => x !== val) : a.concat(val);
+  else a = [val];
+  estado.pitch = !a.length ? 'todos' : a.length === 1 ? a[0] : a; salvar();
+  if (soma && val !== 'todos') { render(true); } else { fecharPitch(true); render(true); }
+}
 function listarPitch() {
   const f = norm(ddBusca.value).trim();
   const camps = (DADOS.campanhas || []).slice().reverse().filter(c => norm(c).includes(f));   // a mais nova primeiro
-  const item = (val, lbl) => { const n = qtdPitch(val); return `<button type="button" role="option" class="it${n ? '' : ' zero'}" data-val="${esc(val)}" aria-selected="${estado.pitch === val}"><span>${esc(lbl)}</span><span class="q">${n}</span></button>`; };
-  ddLista.innerHTML = (f ? '' : item('todos', 'Todos') + '<div class="sep"></div>') + camps.map(c => item(c, c)).join('') || '<div class="vazio-p">Nenhuma campanha com esse nome.</div>';
+  const item = (val, lbl) => { const n = qtdPitch(val); return `<button type="button" role="option" class="it${n ? '' : ' zero'}" data-val="${esc(val)}" aria-selected="${val === 'todos' ? !selPitch().length : selPitch().includes(val)}"><span>${esc(lbl)}</span><span class="q">${n}</span></button>`; };
+  ddLista.innerHTML = (f ? '' : item('todos', 'Todos') + '<div class="sep"></div>') + camps.map(c => item(c, c)).join('') + (camps.length > 1 ? '<div class="dica-p">Para juntar turmas: <b>Ctrl + clique</b> (no celular, <b>toque e segure</b>)</div>' : '') || '<div class="vazio-p">Nenhuma campanha com esse nome.</div>';
 }
 function abrirPitch() { ddPop.hidden = false; ddBtn.setAttribute('aria-expanded', 'true'); ddBusca.value = ''; listarPitch(); ddBusca.focus(); }
 function fecharPitch(foco) { if (ddPop.hidden) return; ddPop.hidden = true; ddBtn.setAttribute('aria-expanded', 'false'); if (foco) ddBtn.focus(); }
 ddBtn.addEventListener('click', e => { e.stopPropagation(); ddPop.hidden ? abrirPitch() : fecharPitch(); });
 document.getElementById('ddLimpar').addEventListener('click', () => escolherPitch('todos'));
 ddBusca.addEventListener('input', listarPitch);
-ddLista.addEventListener('click', e => { const b = e.target.closest('.it'); if (b) escolherPitch(b.dataset.val); });
-document.addEventListener('click', e => { if (!ddPop.hidden && !document.getElementById('fPitch').contains(e.target)) fecharPitch(); });
+let ddSegura = null, ddSegurou = false;
+ddLista.addEventListener('pointerdown', e => {
+  const b = e.target.closest('.it'); if (!b || e.pointerType === 'mouse') return;
+  ddSegurou = false;
+  ddSegura = setTimeout(() => { ddSegurou = true; try { navigator.vibrate && navigator.vibrate(30); } catch (x) {} escolherPitch(b.dataset.val, true); toast('Somando turmas: toque e segure outra para juntar.'); }, 480);
+});
+['pointerup', 'pointerleave', 'pointercancel'].forEach(t => ddLista.addEventListener(t, () => clearTimeout(ddSegura)));
+ddLista.addEventListener('contextmenu', e => { if (ddSegurou) e.preventDefault(); });
+ddLista.addEventListener('click', e => {
+  const b = e.target.closest('.it'); if (!b) return;
+  if (ddSegurou) { ddSegurou = false; e.preventDefault(); return; }
+  escolherPitch(b.dataset.val, e.ctrlKey || e.metaKey);
+});
+document.addEventListener('click', e => { if (!ddPop.hidden && e.target.isConnected && !document.getElementById('fPitch').contains(e.target)) fecharPitch(); });
 ddPop.addEventListener('keydown', e => {
   const its = [...ddLista.querySelectorAll('.it')], i = its.indexOf(document.activeElement);
   if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); fecharPitch(true); }
@@ -552,7 +601,7 @@ ddPop.addEventListener('keydown', e => {
 
 function selStatus() { return Array.isArray(estado.status) ? estado.status.slice() : (estado.status === 'todos' ? [] : [estado.status]); }
 const passaStatus = (v, s) => Array.isArray(s) ? (!s.length || s.some(x => passaStatus(v, x))) : (s === 'todos' || (s === 'venc' ? v.venc : v.k === s));
-const passaPitch = (v, p) => p === 'todos' || v.p === p;
+const passaPitch = (v, p) => Array.isArray(p) ? (!p.length || p.includes(v.p)) : (p === 'todos' || v.p === p);
 function termos() { return norm(estado.q).split(/\s+/).filter(Boolean) }
 function casa(v, ts) { return ts.every(t => v.txt.includes(t) || (t.replace(/\D/g, '').length >= 3 && v.txt.includes(t.replace(/\D/g, '')))) }
 function realce(texto, ts) {
@@ -577,7 +626,7 @@ function listaAtual() {
 function descricaoFiltro() {
   const p = [];
   if (selStatus().length) p.push(selStatus().map(k => CARTOES.find(c => c[0] === k)[1].replace('⚠ ', '')).join(' + '));
-  if (estado.pitch !== 'todos') p.push('Pitch ' + estado.pitch);
+  if (selPitch().length) p.push('Pitch ' + selPitch().join(' + '));
   if (estado.q) p.push('busca “' + estado.q.trim() + '”');
   return p.join(' · ');
 }
@@ -606,8 +655,8 @@ function render(animar) {
     b.querySelector('.v').textContent = b.dataset.val === 'venc' ? (g.length ? 'cobrar o saldo' : 'nenhum no momento') : 'R$ ' + brl(s);
   });
   qtdPitch = val => base.filter(v => passaPitch(v, val) && passaStatus(v, estado.status)).length;
-  const comPitch = estado.pitch !== 'todos';
-  document.getElementById('ddNome').textContent = comPitch ? estado.pitch : 'Todos';
+  const sp = selPitch(), comPitch = sp.length > 0;
+  document.getElementById('ddNome').textContent = !comPitch ? 'Todos' : sp.length === 1 ? sp[0] : sp.length === 2 ? sp.join(' + ') : sp.length + ' pitches';
   document.getElementById('ddQ').textContent = qtdPitch(estado.pitch);
   ddBtn.classList.toggle('on', comPitch);
   document.getElementById('ddLimpar').hidden = !comPitch;
@@ -643,6 +692,7 @@ function render(animar) {
   document.getElementById('atalho').hidden = !!estado.q;
   renderPg(lista, ts);
   renderCb(lista, ts);
+  renderMv(lista, ts);
   
   document.getElementById('filtroPrint').textContent ='Lista: ' + (filtro || 'todas as vendas') + ' · ' + lista.length + ' vendas · valor R$ ' + brl(tb);
 }
@@ -670,6 +720,7 @@ const copiarFone = async e => {
   setTimeout(() => { b.textContent = 'Copiar'; b.classList.remove('ok'); }, 1600);
 };
 document.getElementById('corpo').addEventListener('click', copiarFone);
+document.getElementById('mvCorpo').addEventListener('click', copiarFone);
 
 
 /* PDF */
@@ -680,7 +731,7 @@ function libsPdf() {
   return libs;
 }
 const pdfTxt = s => String(s).replace(/⚠\s*/g, '! ').replace(/[“”]/g, '"');
-const PITCHES = 'Pitch FGPC 24 e Pitch MCIS252 e Pitch CEOP17 e Mentor ALBERTO FREITAS e Mentor MATEUS COSTA e Pitch IF22 e Pitch BHP19';
+const PITCHES = 'Pitch FGPC 24 e Pitch MCIS252 e Pitch CEOP17 e Mentor ALBERTO FREITAS e Mentor MATEUS COSTA e Pitch IF22 e Pitch Coaching Day e Pitch BHP19 e Turma MASTER COACHING';
 async function gerarPdf(lista, filtro, comContatos) {
   await libsPdf();
   const { jsPDF } = window.jspdf;
@@ -777,6 +828,7 @@ btnV.addEventListener('pointerenter', () => libsPdf().catch(() => {}), { once: t
 btnV.addEventListener('click', () => acao(btnV, 'Preparando…', async () => {
   if (aba === 'pg') await salvarBlob('Mentoria-Business-pagamentos.pdf', await gerarPdfPg(listaAtual(), descricaoFiltro()));
   else if (aba === 'cb') await salvarBlob('Mentoria-Business-cheque-boleto.pdf', await gerarPdfCb(listaAtual(), descricaoFiltro()));
+  else if (aba === 'mv') await salvarBlob('Mentoria-Business-mais-de-1-vaga.pdf', await gerarPdfMv(listaAtual(), descricaoFiltro()));
   else await salvarBlob('Mentoria-Business-lista.pdf', await gerarPdf(listaAtual(), descricaoFiltro(), false));
   toast('PDF pronto.');
 }));
@@ -1096,6 +1148,63 @@ async function gerarPdfCb(lista, filtro) {
   for (let p = 1; p <= pags; p++) { doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(138, 153, 168); doc.text(pdfTxt(document.getElementById('cbNota').textContent + ' Dados do Sales Cube de ' + DADOS.gerado), M, H - 7, { maxWidth: W - 2 * M - 30 }); doc.text('Página ' + p + ' de ' + pags, W - M, H - 7, { align: 'right' }); }
   return doc.output('blob');
 }
+/* ---------- Aba Mais de 1 vaga (prévia 1 aprovada pelo Pablo, 19/11/2026) ----------
+   Vendas com 2+ vagas: uma linha por venda e as vagas extras logo abaixo; "Por vaga" = valor ÷ vagas.
+   Vaga extra com o nome do próprio titular = consumidor ainda não informado no ZS → "A definir". */
+const mvNv = v => 1 + (v.vagas || []).length;
+const mvDef = (v, x) => (x.n || '').trim().toLowerCase() !== (v.n || '').trim().toLowerCase();
+function linhasMv(lista) { return lista.filter(v => (v.vagas || []).length).slice().sort((a, b) => mvNv(b) - mvNv(a) || b.b - a.b); }
+function renderMv(lista, ts) {
+  const L = linhasMv(lista), totV = L.reduce((s, v) => s + mvNv(v), 0), totB = L.reduce((s, v) => s + v.b, 0);
+  const adef = L.reduce((s, v) => s + v.vagas.filter(x => !mvDef(v, x)).length, 0);
+  document.getElementById('mvConta').textContent = `${L.length} ${L.length === 1 ? 'venda' : 'vendas'} · ${totV} vagas`;
+  const card = (rot, val, sub, cls) => `<div${cls ? ` class="${cls}"` : ''}><span>${rot}</span><b>${val}</b><small>${sub}</small></div>`;
+  document.getElementById('mvRes').innerHTML = card('Vendas com 2+ vagas', L.length, 'de ' + lista.length + ' vendas na lista') + card('Vagas nessas vendas', totV, (totV - L.length) + ' vagas extras')
+    + card('Valor', 'R$ ' + brl(totB), totV ? 'média de R$ ' + brl(totB / totV) + ' por vaga' : '') + card('Vagas a definir', adef, 'sem consumidor no ZS', adef ? 'alerta' : '');
+  const fone = (c, n) => c ? `<span class="fone"><span>${realce(c, ts)}</span><button type="button" class="copiar" data-fone="${esc(c)}" aria-label="Copiar o telefone de ${esc(n)}">Copiar</button></span>` : '';
+  document.getElementById('mvCorpo').innerHTML = L.map((v, i) => `<tr><td class="n">${i + 1}</td><td><span class="pitch">${esc(v.p)}</span></td>
+    <td class="nome"><a href="${esc(v.link)}" target="_blank" rel="noopener" title="Abrir a venda no Sales Cube">${realce(v.n, ts)}</a></td>
+    <td class="c"><span class="qt">${mvNv(v)}</span></td><td><span class="pill ${v.k}">${ST_CURTO[v.k]}</span></td>
+    <td class="r">${brl(v.b)}</td><td class="r">${brl(v.b / mvNv(v))}</td><td>${fone(v.c, v.n)}</td></tr>`
+    + v.vagas.map((x, j) => `<tr class="sub"><td></td><td></td><td class="nome">↳ ${mvDef(v, x) ? realce(x.n, ts) : '<span class="adef">A definir</span>'} <small>${j + 2}ª vaga</small></td><td></td><td></td>
+    <td class="r">0,00</td><td></td><td>${mvDef(v, x) ? fone(x.c, x.n) : ''}</td></tr>`).join('')).join('');   // o valor da venda fica só na linha do titular
+  document.getElementById('mvPe').innerHTML = L.length ? `<tr><td></td><td></td><td>Total · ${L.length} ${L.length === 1 ? 'venda' : 'vendas'}</td><td class="c">${totV}</td><td></td><td class="r">${brl(totB)}</td><td class="r">${brl(totB / totV)}</td><td></td></tr>` : '';
+  document.getElementById('mvNota').textContent = 'Uma linha por venda; as vagas extras vêm logo abaixo, a R$ 0,00. “Por vaga” = valor da venda ÷ número de vagas. “A definir” = a vaga extra está no nome do próprio titular no ZS (o consumidor ainda não foi informado).';
+  document.getElementById('mvVazio').hidden = L.length > 0;
+  document.querySelector('.mvtab').hidden = !L.length;
+  document.getElementById('mvRes').hidden = !L.length;
+}
+async function gerarPdfMv(lista, filtro) {
+  await libsPdf();
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  const L = linhasMv(lista), totV = L.reduce((s, v) => s + mvNv(v), 0), totB = L.reduce((s, v) => s + v.b, 0);
+  const W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight(), M = 10;
+  doc.setFillColor(15, 34, 54); doc.rect(0, 0, W, 30, 'F');
+  doc.setTextColor(227, 178, 90); doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.text(('Febracis Vitória · ' + PITCHES).toUpperCase(), M, 10);
+  doc.setTextColor(255, 255, 255); doc.setFontSize(17); doc.text('Mentoria Business — Mais de 1 vaga', M, 19);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(185, 200, 214); doc.text(pdfTxt('Lista: ' + (filtro || 'todas as vendas') + ' · ' + L.length + ' vendas · ' + totV + ' vagas · R$ ' + brl(totB)), M, 25.5);
+  const body = [], subs = [];
+  L.forEach((v, i) => {
+    body.push([i + 1, v.p, v.n, mvNv(v), ST_CURTO[v.k], brl(v.b), brl(v.b / mvNv(v)), v.c || '']);
+    v.vagas.forEach((x, j) => { subs.push(body.length); body.push(['', '', '   ' + (mvDef(v, x) ? x.n : 'A definir') + '  (' + (j + 2) + 'ª vaga)', '', '', '0,00', '', mvDef(v, x) ? (x.c || '') : '']); });
+  });
+  body.push(['', '', 'Total · ' + L.length + ' vendas', totV, '', brl(totB), totV ? brl(totB / totV) : '', '']);
+  doc.autoTable({ theme: 'plain', startY: 36, margin: { left: M, right: M, bottom: 14 },
+    styles: { font: 'helvetica', fontSize: 8.5, cellPadding: 1.8, textColor: [19, 41, 61], overflow: 'ellipsize', lineColor: [217, 225, 232], lineWidth: { bottom: .2 } },
+    headStyles: { fontStyle: 'bold', fontSize: 7.5, textColor: [77, 98, 118], lineColor: [19, 41, 61], lineWidth: { bottom: .5 } },
+    head: [['#', 'Pitch', 'Cliente', 'Vagas', 'Situação', 'Valor', 'Por vaga', 'Telefone']], body,
+    columnStyles: { 0: { cellWidth: 8, halign: 'right' }, 1: { cellWidth: 30 }, 2: { cellWidth: 95, fontStyle: 'bold' }, 3: { cellWidth: 14, halign: 'center' }, 4: { cellWidth: 26 }, 5: { cellWidth: 30, halign: 'right' }, 6: { cellWidth: 28, halign: 'right' }, 7: { cellWidth: 40 } },
+    didParseCell: d => {
+      if (d.section === 'head') { d.cell.styles.halign = [0, 5, 6].includes(d.column.index) ? 'right' : d.column.index === 3 ? 'center' : 'left'; return; }
+      if (d.row.index === body.length - 1) { d.cell.styles.fillColor = [19, 41, 61]; d.cell.styles.textColor = [255, 255, 255]; d.cell.styles.fontStyle = 'bold'; return; }
+      if (subs.includes(d.row.index)) { d.cell.styles.fillColor = [243, 245, 248]; d.cell.styles.fontStyle = 'normal'; d.cell.styles.textColor = String(d.cell.raw).includes('A definir') ? [179, 38, 30] : [77, 98, 118]; }
+    }
+  });
+  const pags = doc.getNumberOfPages();
+  for (let p = 1; p <= pags; p++) { doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(138, 153, 168); doc.text(pdfTxt(document.getElementById('mvNota').textContent + ' Dados do Sales Cube de ' + DADOS.gerado), M, H - 7, { maxWidth: W - 2 * M - 30 }); doc.text('Página ' + p + ' de ' + pags, W - M, H - 7, { align: 'right' }); }
+  return doc.output('blob');
+}
 
 let aba = 'vendas';   // sempre abre em Vendas
 function trocarAba(a) {
@@ -1106,12 +1215,15 @@ function trocarAba(a) {
   document.getElementById('viewPg').hidden = a !== 'pg';
   document.getElementById('abaCb').setAttribute('aria-selected', a === 'cb');
   document.getElementById('viewCb').hidden = a !== 'cb';
+  document.getElementById('abaMv').setAttribute('aria-selected', a === 'mv');
+  document.getElementById('viewMv').hidden = a !== 'mv';
   
   // o botão se chama sempre "Baixar PDF desta lista" (pedido do Pablo); na aba de pagamentos ele baixa o PDF dos pagamentos
 }
 document.getElementById('abaVendas').addEventListener('click', () => trocarAba('vendas'));
 document.getElementById('abaPg').addEventListener('click', () => trocarAba('pg'));
 document.getElementById('abaCb').addEventListener('click', () => trocarAba('cb'));
+document.getElementById('abaMv').addEventListener('click', () => trocarAba('mv'));
 document.getElementById('cbRes').addEventListener('click', e => {
   const b = e.target.closest('button[data-cb]'); if (!b) return;
   cbFiltro = b.dataset.cb === cbFiltro ? 'todos' : b.dataset.cb;   // clicar de novo no card ativo volta para todas
