@@ -213,11 +213,9 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
 
 
 /* Mais de 1 vaga (prévia 1 aprovada pelo Pablo, 19/11/2026): mesma base da Cheque / Boleto */
-.mvres > div { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 10px 14px; min-width: 150px }
-.mvres > div span { display: block; font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2) }
-.mvres > div b { font: 800 17px/1.3 var(--display); font-variant-numeric: tabular-nums }
-.mvres > div small { display: block; font-size: 12px; color: var(--ink-2) }
-.mvres > div.alerta b { color: var(--est) }
+/* cards clicáveis (19/11/2026): mesmo botão da Cheque / Boleto (.cbres button), com a linha de apoio embaixo */
+.mvres button small { display: block; font-size: 12px; color: var(--ink-2) }
+.mvres button.alerta b { color: var(--est) }
 .mvtab td { font-size: 13.5px }
 .mvtab .qt { display: inline-flex; align-items: center; justify-content: center; min-width: 26px; height: 22px; padding: 0 7px; border-radius: 99px; background: var(--gold); color: #fff; font: 800 12.5px var(--display) }
 .mvtab tr.sub td { background: var(--surface-2); font-size: 12.5px; padding-top: 4px; padding-bottom: 4px }
@@ -431,10 +429,10 @@ mark { background: var(--ent-bg); color: inherit; border-radius: 3px; box-shadow
     <p class="so-print" id="filtroPrint"></p>
     <div class="abas" role="tablist" aria-label="O que mostrar">
       <button type="button" role="tab" id="abaVendas" aria-selected="true" aria-controls="viewVendas">Vendas</button>
+      <button type="button" role="tab" id="abaMv" aria-selected="false" aria-controls="viewMv">Mais de 1 vaga</button>
       
       <button type="button" role="tab" id="abaPg" aria-selected="false" aria-controls="viewPg">Formas de pagamento</button>
       <button type="button" role="tab" id="abaCb" aria-selected="false" aria-controls="viewCb">Cheque / Boleto</button>
-      <button type="button" role="tab" id="abaMv" aria-selected="false" aria-controls="viewMv">Mais de 1 vaga</button>
     </div>
     
     <section id="viewPg" class="pgview" role="tabpanel" aria-labelledby="abaPg" hidden>
@@ -1154,31 +1152,54 @@ async function gerarPdfCb(lista, filtro) {
 const mvNv = v => 1 + (v.vagas || []).length;
 const mvDef = (v, x) => (x.n || '').trim().toLowerCase() !== (v.n || '').trim().toLowerCase();
 function linhasMv(lista) { return lista.filter(v => (v.vagas || []).length).slice().sort((a, b) => mvNv(b) - mvNv(a) || b.b - a.b); }
+// Cards clicáveis (pedido do Pablo, 19/11/2026), igual à Cheque / Boleto; clicar de novo no card ativo volta para todas:
+//   todos  = Vendas com 2+ vagas (padrão) · extras = Vagas nessas vendas (uma linha por vaga extra, com quem ocupa)
+//   valor  = Valor (maior venda primeiro)  · adef   = Vagas a definir (só as vendas com vaga sem consumidor)
+let mvFiltro = 'todos';
+function vendasMv(lista) {
+  let L = linhasMv(lista);
+  if (mvFiltro === 'valor') L = L.slice().sort((a, b) => b.b - a.b);
+  if (mvFiltro === 'adef') L = L.filter(v => v.vagas.some(x => !mvDef(v, x)));
+  return L;
+}
+function extrasMv(L) { return L.flatMap(v => v.vagas.map((x, j) => ({ v, x, j }))); }
 function renderMv(lista, ts) {
-  const L = linhasMv(lista), totV = L.reduce((s, v) => s + mvNv(v), 0), totB = L.reduce((s, v) => s + v.b, 0);
-  const adef = L.reduce((s, v) => s + v.vagas.filter(x => !mvDef(v, x)).length, 0);
-  document.getElementById('mvConta').textContent = `${L.length} ${L.length === 1 ? 'venda' : 'vendas'} · ${totV} vagas`;
-  const card = (rot, val, sub, cls) => `<div${cls ? ` class="${cls}"` : ''}><span>${rot}</span><b>${val}</b><small>${sub}</small></div>`;
-  document.getElementById('mvRes').innerHTML = card('Vendas com 2+ vagas', L.length, 'de ' + lista.length + ' vendas na lista') + card('Vagas nessas vendas', totV, (totV - L.length) + ' vagas extras')
-    + card('Valor', 'R$ ' + brl(totB), totV ? 'média de R$ ' + brl(totB / totV) + ' por vaga' : '') + card('Vagas a definir', adef, 'sem consumidor no ZS', adef ? 'alerta' : '');
+  const T = linhasMv(lista), totV = T.reduce((s, v) => s + mvNv(v), 0), totB = T.reduce((s, v) => s + v.b, 0);
+  const adef = T.reduce((s, v) => s + v.vagas.filter(x => !mvDef(v, x)).length, 0);
+  const L = vendasMv(lista), lv = L.reduce((s, v) => s + mvNv(v), 0), lb = L.reduce((s, v) => s + v.b, 0);
+  const rotF = { extras: 'uma linha por vaga extra', valor: 'maior valor primeiro', adef: 'só com vaga a definir' }[mvFiltro];
+  document.getElementById('mvConta').textContent = `${T.length} ${T.length === 1 ? 'venda' : 'vendas'} · ${totV} vagas` + (rotF ? ` · ${rotF}` : '');
+  const card = (k, rot, val, sub, dica, cls) => `<button type="button" data-mv="${k}" aria-pressed="${mvFiltro === k}" title="${dica}"${cls ? ` class="${cls}"` : ''}><span>${rot}</span><b>${val}</b><small>${sub}</small></button>`;
+  document.getElementById('mvRes').innerHTML = card('todos', 'Vendas com 2+ vagas', T.length, 'de ' + lista.length + ' vendas na lista', 'Mostrar todas as vendas com mais de 1 vaga')
+    + card('extras', 'Vagas nessas vendas', totV, (totV - T.length) + ' vagas extras', 'Mostrar uma linha por vaga extra, com quem ocupa')
+    + card('valor', 'Valor', 'R$ ' + brl(totB), totV ? 'média de R$ ' + brl(totB / totV) + ' por vaga' : '', 'Ordenar pelo maior valor')
+    + card('adef', 'Vagas a definir', adef, 'sem consumidor no ZS', 'Mostrar só as vendas com vaga sem consumidor', adef ? 'alerta' : '');
   const fone = (c, n) => c ? `<span class="fone"><span>${realce(c, ts)}</span><button type="button" class="copiar" data-fone="${esc(c)}" aria-label="Copiar o telefone de ${esc(n)}">Copiar</button></span>` : '';
+  if (mvFiltro === 'extras') {
+    const E = extrasMv(L);
+    document.getElementById('mvCorpo').innerHTML = E.map((e, i) => `<tr><td class="n">${i + 1}</td><td><span class="pitch">${esc(e.v.p)}</span></td>
+    <td class="nome">${mvDef(e.v, e.x) ? realce(e.x.n, ts) : '<span class="adef">A definir</span>'} <small class="det">compra de <a href="${esc(e.v.link)}" target="_blank" rel="noopener" title="Abrir a venda no Sales Cube">${realce(e.v.n, ts)}</a></small></td>
+    <td class="c">${e.j + 2}ª de ${mvNv(e.v)}</td><td><span class="pill ${e.v.k}">${ST_CURTO[e.v.k]}</span></td><td class="r">0,00</td><td></td><td>${mvDef(e.v, e.x) ? fone(e.x.c, e.x.n) : ''}</td></tr>`).join('');
+    document.getElementById('mvPe').innerHTML = E.length ? `<tr><td></td><td></td><td>Total · ${E.length} ${E.length === 1 ? 'vaga extra' : 'vagas extras'}</td><td></td><td></td><td></td><td></td><td></td></tr>` : '';
+  } else {
   document.getElementById('mvCorpo').innerHTML = L.map((v, i) => `<tr><td class="n">${i + 1}</td><td><span class="pitch">${esc(v.p)}</span></td>
     <td class="nome"><a href="${esc(v.link)}" target="_blank" rel="noopener" title="Abrir a venda no Sales Cube">${realce(v.n, ts)}</a></td>
     <td class="c"><span class="qt">${mvNv(v)}</span></td><td><span class="pill ${v.k}">${ST_CURTO[v.k]}</span></td>
     <td class="r">${brl(v.b)}</td><td class="r">${brl(v.b / mvNv(v))}</td><td>${fone(v.c, v.n)}</td></tr>`
     + v.vagas.map((x, j) => `<tr class="sub"><td></td><td></td><td class="nome">↳ ${mvDef(v, x) ? realce(x.n, ts) : '<span class="adef">A definir</span>'} <small>${j + 2}ª vaga</small></td><td></td><td></td>
     <td class="r">0,00</td><td></td><td>${mvDef(v, x) ? fone(x.c, x.n) : ''}</td></tr>`).join('')).join('');   // o valor da venda fica só na linha do titular
-  document.getElementById('mvPe').innerHTML = L.length ? `<tr><td></td><td></td><td>Total · ${L.length} ${L.length === 1 ? 'venda' : 'vendas'}</td><td class="c">${totV}</td><td></td><td class="r">${brl(totB)}</td><td class="r">${brl(totB / totV)}</td><td></td></tr>` : '';
+  document.getElementById('mvPe').innerHTML = L.length ? `<tr><td></td><td></td><td>Total · ${L.length} ${L.length === 1 ? 'venda' : 'vendas'}</td><td class="c">${lv}</td><td></td><td class="r">${brl(lb)}</td><td class="r">${brl(lb / lv)}</td><td></td></tr>` : '';
+  }
   document.getElementById('mvNota').textContent = 'Uma linha por venda; as vagas extras vêm logo abaixo, a R$ 0,00. “Por vaga” = valor da venda ÷ número de vagas. “A definir” = a vaga extra está no nome do próprio titular no ZS (o consumidor ainda não foi informado).';
   document.getElementById('mvVazio').hidden = L.length > 0;
   document.querySelector('.mvtab').hidden = !L.length;
-  document.getElementById('mvRes').hidden = !L.length;
+  document.getElementById('mvRes').hidden = !T.length;
 }
 async function gerarPdfMv(lista, filtro) {
   await libsPdf();
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-  const L = linhasMv(lista), totV = L.reduce((s, v) => s + mvNv(v), 0), totB = L.reduce((s, v) => s + v.b, 0);
+  const L = vendasMv(lista), totV = L.reduce((s, v) => s + mvNv(v), 0), totB = L.reduce((s, v) => s + v.b, 0);
   const W = doc.internal.pageSize.getWidth(), H = doc.internal.pageSize.getHeight(), M = 10;
   doc.setFillColor(15, 34, 54); doc.rect(0, 0, W, 30, 'F');
   doc.setTextColor(227, 178, 90); doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.text(('Febracis Vitória · ' + PITCHES).toUpperCase(), M, 10);
@@ -1224,6 +1245,11 @@ document.getElementById('abaVendas').addEventListener('click', () => trocarAba('
 document.getElementById('abaPg').addEventListener('click', () => trocarAba('pg'));
 document.getElementById('abaCb').addEventListener('click', () => trocarAba('cb'));
 document.getElementById('abaMv').addEventListener('click', () => trocarAba('mv'));
+document.getElementById('mvRes').addEventListener('click', e => {
+  const b = e.target.closest('button[data-mv]'); if (!b) return;
+  mvFiltro = b.dataset.mv === mvFiltro ? 'todos' : b.dataset.mv;   // clicar de novo no card ativo volta para todas
+  render(false);
+});
 document.getElementById('cbRes').addEventListener('click', e => {
   const b = e.target.closest('button[data-cb]'); if (!b) return;
   cbFiltro = b.dataset.cb === cbFiltro ? 'todos' : b.dataset.cb;   // clicar de novo no card ativo volta para todas
